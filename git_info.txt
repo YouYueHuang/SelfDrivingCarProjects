@@ -1,0 +1,5 @@
+mkdir Documents//GitHub//self_driving_car_projects
+cd Documents//GitHub//self_driving_car_projects
+git init
+git pull https://github.com/YouYueHuang/SelfDrivingCarProjects.git
+git remote add origin https://github.com/YouYueHuang/SelfDrivingCarProjects
