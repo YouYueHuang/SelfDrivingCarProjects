@@ -5,6 +5,7 @@ Project files and directories for self-driving car
 This repository is for Udacity self driving class. The projects in this course uses the matplotlib, opencv, google tensorflow library. I have created a python 3.6.1 virtualenv and have installed jupyter and tensorflow there. 
 
 ## Installation
+------
 update pip, conda and conda-env to latest version
 ```python
 conda install -c anaconda pip
@@ -47,7 +48,17 @@ Pillow is a Python Imaging Library (PIL). Once Pillow is installed, the standard
 
 install moviepy 
 ```python
-(tensorflow) C://Users//self_driving_car_projects>conda install -c conda-forge moviepy 
+conda install -c conda-forge moviepy 
+```
+
+install pandas
+```python
+conda install -c anaconda pandas
+```
+
+install scikit-learn
+```python
+conda install -c anaconda scikit-learn 
 ```
 
 install the Jupyter Notebook:
@@ -66,7 +77,7 @@ Deactivate virtual environment
 ```
 
 ## Reference
-
+------
 * [Installing TensorFlow on Windows](https://www.tensorflow.org/install/install_windows)
 * [Installing Jupyter with pip](http://jupyter.readthedocs.io/en/latest/install.html)
 * [Downloading opencv](https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv)
