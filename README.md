@@ -1,10 +1,12 @@
 # SelfDrivingCarProjects
 
-Project files and directories for self-driving car
-
 This repository is for Udacity self driving class. The projects in this course uses the matplotlib, opencv, google tensorflow library. I have created a python 3.6.1 virtualenv and have installed jupyter and tensorflow there. 
 
 ## Installation
+
+Download Anaconda 3.6 in official site
+(Anaconda Distribution)[https://www.anaconda.com/download/#windows]
+
 ------
 update pip, conda and conda-env to latest version
 ```python
@@ -13,7 +15,7 @@ conda install -c anaconda pip
 
 create and activate a python virtual environment named tensorflow
 ```python
-C://Users//self_driving_car_projects>conda create -n tensorflow python=3.6.1
+C://Users//self_driving_car_projects>conda create -n tensorflow python=3.6.3
 C://Users//self_driving_car_projects>activate tensorflow
 ```
 
@@ -41,6 +43,7 @@ install matplotlib
 ```
 
 install pillow
+
 Pillow is a Python Imaging Library (PIL). Once Pillow is installed, the standard Matplotlib library can handel the figure of JPEG format and will not generate a ValueError any more. Otherwise 'ValueError: Format "jpg" is not supported' will show.
 ```python
 (tensorflow) C://Users//self_driving_car_projects>pip install pillow
