@@ -64,6 +64,11 @@ install scikit-learn
 conda install -c anaconda scikit-learn 
 ```
 
+install imageio
+```python
+conda install -c menpo imageio
+```
+
 install the Jupyter Notebook:
 ```python
 (tensorflow) C://Users//self_driving_car_projects>pip install jupyter
