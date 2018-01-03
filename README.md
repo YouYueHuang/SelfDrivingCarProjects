@@ -79,6 +79,16 @@ Start an jupyter notebook inside a python virtualenv
 (tensorflow) C://Users//self_driving_car_projects>jupyter notebook
 ```
 
+Install Matplotlib Jupyter Extension for the Matplotlib Jupyter widget
+```python
+(tensorflow) C://Users//self_driving_car_projects>conda install -c conda-forge ipympl 
+(tensorflow) C://Users//self_driving_car_projects>conda install -c conda-forge widgetsnbextension
+```
+Install seaborn
+```python
+(tensorflow) C://Users//self_driving_car_projects>conda install -c anaconda seaborn 
+```
+
 Deactivate virtual environment
 ```python
 (tensorflow) C://Users//self_driving_car_projects>deactivate tensorflow
@@ -90,3 +100,4 @@ Deactivate virtual environment
 * [Installing Jupyter with pip](http://jupyter.readthedocs.io/en/latest/install.html)
 * [Downloading opencv](https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv)
 * [Google code guideline](https://google.github.io/styleguide/)
+* [jupyter-matplotlib widget](https://github.com/matplotlib/jupyter-matplotlib)
