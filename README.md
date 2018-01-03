@@ -89,6 +89,11 @@ Install seaborn
 (tensorflow) C://Users//self_driving_car_projects>conda install -c anaconda seaborn 
 ```
 
+Install plotly for interactive dashboard
+```python
+(tensorflow) C://Users//self_driving_car_projects>conda install -c anaconda plotly
+```
+
 Deactivate virtual environment
 ```python
 (tensorflow) C://Users//self_driving_car_projects>deactivate tensorflow
