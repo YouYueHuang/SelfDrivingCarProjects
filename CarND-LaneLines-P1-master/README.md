@@ -1,20 +1,30 @@
 # **Finding Lane Lines on the Road** 
-
-<img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
-
+--------
 Overview
 ---
 To develop a self-driving car, one of the critical issues is to tell the car where to go. The lines on the road that show drivers where the lanes act as a constant reference for where to steer the vehicle. This project builds an algorithm and applies Python packages to automatically detect lane lines in images.
 
 Getting Started
 ---
-[Main_pipeline.ipynb](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/Main_pipeline.ipynb) This notebook contains the code to detect lane line and visualizes the processing steps. It shows an example of using a model pre-trained on MS COCO to segment objects in your own images.
+```shell
+[Main_pipeline.ipynb](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/Main_pipeline.ipynb) 
+```
+This notebook contains the code to detect lane line and visualizes the processing steps. It shows an example of using a model pre-trained on MS COCO to segment objects in your own images.
 
-[examples](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/examples) It shows the results of each step in image processing pipeline.
+```shell
+[examples](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/examples) 
+```
+It shows the results of each step in image processing pipeline.
 
-[test_images](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images), [test_images_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images_output): These files contain the test images and the detected lane lines.
+```shell
+[test_images](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images), [test_images_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images_output) 
+```
+These files contain the test images and the detected lane lines.
 
-[test_videos](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos), [test_videos_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos_output): These files contain the test videos and the detected lane lines.
+```shell
+[test_videos](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos), [test_videos_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos_output) 
+```
+These files contain the test videos and the detected lane lines.
 
 Pipeline
 ---
@@ -29,9 +39,9 @@ Pipeline
 
 * Select color of interest
 
-<img src="./examples/GB_distribution.jpg" alt="Overview" width="33%" height="300px">
-<img src="./examples/RB_distribution.jpg" alt="Overview" width="33%" height="300px">
-<img src="./examples/RG_distribution.jpg" alt="Overview" width="33%" height="300px">
+<img src="./examples/GB_distribution.png" alt="Overview" width="33%" height="300px">
+<img src="./examples/RB_distribution.png" alt="Overview" width="33%" height="300px">
+<img src="./examples/RG_distribution.png" alt="Overview" width="33%" height="300px">
 
 <img src="./examples/lane_line.jpg" alt="Overview" width="60%" height="300px">
 
@@ -45,7 +55,7 @@ Pipeline
 
 *　Gaussian blurred processing
 
-<img src="./examples/blurred_img.jpg" alt="Overview" width="60%" height="300px">
+<img src="./examples/gussian_blurred_img.jpg" alt="Overview" width="60%" height="300px">
 
 *　Hough line transformation
 
@@ -57,8 +67,23 @@ Pipeline
 
 * Video with detected lane line
 
-<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/lane_line_logo.gif" alt="Overview" width="30%" height="300px"></a>
-<a href="https://www.youtube.com/watch?v=BYAPi9Xv6cs"><img src="./img/colorFilter_challenge.gif" alt="Overview" width="30%" height="300px"></a>
+```shell
+solidYellowLeft.mp4
+```
+<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidYellowLeft.gif" alt="Overview" width="50%" height="300px"></a>
+<a href="https://www.youtube.com/watch?v=1rsAzuuPxj0"><img src="./img/colorFilter_solidYellowLeft.gif" alt="Overview" width="50%" height="300px"></a>
+
+```shell
+solidWhiteRight.mp4
+```
+<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidWhiteRight.gif" alt="Overview" width="50%" height="300px"></a>
+<a href="https://www.youtube.com/watch?v=A6O8dB1wdZ4"><img src="./img/colorFilter_solidWhiteRight.gif" alt="Overview" width="50%" height="300px"></a>
+
+```shell
+challenge.mp4
+```
+<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/lane_line_logo.gif" alt="Overview" width="50%" height="300px"></a>
+<a href="https://www.youtube.com/watch?v=BYAPi9Xv6cs"><img src="./img/colorFilter_challenge.gif" alt="Overview" width="50%" height="300px"></a>
 
 Differences from the baselines
 ---
