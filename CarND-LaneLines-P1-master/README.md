@@ -31,7 +31,7 @@ The following steps are listed based on the image processing order. The images a
 
 <img src="./examples/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
 
-* Select color of interest
+* Visualize color distribution
 
 <div>
 	<p>GB distribution</p>
@@ -41,6 +41,8 @@ The following steps are listed based on the image processing order. The images a
 	<p>RG distribution</p>
 	<img src="./examples/RG_distribution.png" alt="Overview" width="33%" height="300px">
 </div>
+
+* Color detection
 
 <img src="./examples/lane_line.jpg" alt="Overview" width="60%" height="300px">
 
