@@ -9,7 +9,6 @@ from os import listdir
 
 def main(argv):
    inputdir = None
-   outputfile = None
 
    try:
       opts, args = getopt.getopt(argv,"hi:",["idir="])
@@ -50,8 +49,8 @@ def main(argv):
       print ('incorrect gif size')
       sys.exit(2) 
    try:
-      width = float(width)
-      height = float(height)
+      width = int(width)
+      height = int(height)
    except ValueError:
       print ('gif size should be a number')
       sys.exit(2)  
@@ -72,8 +71,7 @@ def main(argv):
 
          print("gif generating starts")
          
-
-         out_path = join(gifSaved_dir,basename(f).split('.')[0])
+         out_path = join(gifSaved_dir,basename(f).split('.')[0] + '.gif')
 
          with imageio.get_writer(out_path, mode='I', fps=fps) as writer:
              for im in reader:

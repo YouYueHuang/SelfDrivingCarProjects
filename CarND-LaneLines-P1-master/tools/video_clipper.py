@@ -7,19 +7,23 @@ import math
 
 def main(argv):
    inputfile = None
-   outputfile = None
 
    try:
-      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+      opts, args = getopt.getopt(argv,"hi:",["ifile="])
    except getopt.GetoptError as err:
       print (str(err))
-      print ('please follow the syntax: video_clipper.py -i <input file name.mp4> -o <output file name.mp4> start_time end_time')
+      print ('please follow the syntax: video_clipper.py\
+                                       -i <input file name.mp4>\
+                                       start_time\
+                                        end_time')
       sys.exit(2)
 
    # argument parsing
    for opt, arg in opts:
       if opt == '-h':
-         print ('valid syntax: "video_clipper.py -i <input file name.mp4> -o <output file name.mp4> start_time end_time"')
+         print ('valid syntax: "video_clipper.py\
+                               -i <input file name.mp4>\
+                                 start_time end_time"')
          sys.exit()
       elif opt in ("-i", "--ifile"):
          inputfile = arg
@@ -29,15 +33,10 @@ def main(argv):
          if not os.path.exists(inputfile):
             sys.exit('video %s was not found!' % inputfile)
             sys.exit(2)
-      elif opt in ("-o", "--ofile"):
-         outputfile = arg
 
    if inputfile is None:
       print ('input file could not be empty')
       sys.exit(2)
-
-   if outputfile is None:
-      outputfile = "modified_" + basename(inputfile)
 
    # load video
    origian_clip = VideoFileClip(inputfile)
@@ -85,6 +84,8 @@ def main(argv):
    videoSaved_dir = "clipped_video_output"
    if not os.path.exists(videoSaved_dir):
        os.makedirs(videoSaved_dir)
+   
+   outputfile = "clipped_" + str(start_t) + "_to_" + str(end_t) + "_" + basename(inputfile)
    out_path = join(videoSaved_dir,outputfile)
    clip1.write_videofile(out_path, audio=False)
    print ('Output file is :', out_path)
