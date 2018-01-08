@@ -52,7 +52,7 @@ The following steps are listed based on the image processing order. The images a
 
 <img src="./examples/canny_img.jpg" alt="Overview" width="60%" height="300px">
 
-*　Gaussian blurred processing
+* Gaussian blurred processing
 
 <img src="./examples/gussian_blurred_img.jpg" alt="Overview" width="60%" height="300px">
 
@@ -64,21 +64,28 @@ The following steps are listed based on the image processing order. The images a
 <p>Distance and slope feature of Hough lines in Scatter matrix plot</p>
 <img src="./examples/Feature_of_interest.png" alt="Overview" width="60%" height="300px">
 
-*　Detected lane line after extrapolation
+* Detected lane line after extrapolation
 
 <img src="./examples/out_image.jpg" alt="Overview" width="60%" height="300px">
 
+
 * Video with detected lane line
 
-`solidYellowLeft.mp4`
+```shell
+solidYellowLeft.mp4
+```
 <a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidYellowLeft.gif" alt="Overview" width="45%" height="275px"></a>
 <a href="https://www.youtube.com/watch?v=1rsAzuuPxj0"><img src="./img/colorFilter_solidYellowLeft.gif" alt="Overview" width="50%" height="275px"></a>
 
-`solidWhiteRight.mp4`
+```shell
+solidWhiteRight.mp4
+```
 <a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidWhiteRight.gif" alt="Overview" width="45%" height="275px"></a>
 <a href="https://www.youtube.com/watch?v=A6O8dB1wdZ4"><img src="./img/colorFilter_solidWhiteRight.gif" alt="Overview" width="50%" height="275px"></a>
 
-`challenge.mp4`
+```shell
+challenge.mp4
+```
 <a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/lane_line_logo.gif" alt="Overview" width="45%" height="275px"></a>
 <a href="https://www.youtube.com/watch?v=BYAPi9Xv6cs"><img src="./img/colorFilter_challenge.gif" alt="Overview" width="45%" height="275px"></a>
 
