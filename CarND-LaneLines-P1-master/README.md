@@ -7,7 +7,6 @@ To develop a self-driving car, one of the critical issues is to tell the car whe
 Getting Started
 ---
 * [Main_pipeline.ipynb](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/Main_pipeline.ipynb) 
-
 This notebook contains the code to detect lane line and visualizes the processing steps. It shows an example of using a model pre-trained on MS COCO to segment objects in your own images.
 
 * [examples](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/examples) 

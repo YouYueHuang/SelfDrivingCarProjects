@@ -10,8 +10,9 @@ Getting Started
 * video clipper
 
 <p>syntax: </p>
+
 ```shell
-> python video_clipper.py -i {input_file_name.mp4} start_time end_time
+python video_clipper.py -i {input_file_name.mp4} start_time end_time
 ```
 
 <p>The result is in the directory `clipped_video_output` </p>
@@ -19,8 +20,9 @@ Getting Started
 * video to gif converter
 
 <p>syntax: </p>
+
 ```shell
-> python video_to_gif_converter.py -i {input directory} width height
+python video_to_gif_converter.py -i {input directory} width height
 ```
 
 <p>The result is in the directory `gif_output` </p>

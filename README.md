@@ -2,11 +2,12 @@
 
 This repository is for Udacity self driving class. The projects in this course uses the matplotlib, opencv, google tensorflow library. I have created a python 3.6.1 virtualenv and have installed jupyter and tensorflow there. 
 
-## Installation
+## Anaconda installation
 
 Download Anaconda 3.6 in official site
-(Anaconda Distribution)[https://www.anaconda.com/download/#windows]
+[Anaconda Distribution](https://www.anaconda.com/download/#windows)
 
+Package usage in Lane Line Detection
 ------
 update pip, conda and conda-env to latest version
 ```python
@@ -98,6 +99,16 @@ Deactivate virtual environment
 ```python
 (tensorflow) C://Users//self_driving_car_projects>deactivate tensorflow
 ```
+
+Package usage in Traffic sign recognition 
+------
+
+This package facilitates the creation and rendering from Python.
+```python
+(tensorflow) C://Users//self_driving_car_projects>conda install -c conda-forge python-graphviz
+```
+
+
 
 ## Reference
 ------
