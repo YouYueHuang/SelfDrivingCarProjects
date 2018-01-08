@@ -20,7 +20,7 @@ Getting Started
 
 <p>syntax: </p>
 ```shell
-> python video_to_gif_converter.py -i <input directory> width height
+> python video_to_gif_converter.py -i {input directory} width height
 ```
 
 <p>The result is in the directory `gif_output` </p>
