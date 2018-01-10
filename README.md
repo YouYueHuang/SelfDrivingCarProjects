@@ -16,7 +16,7 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
   > update pip, conda and conda-env to latest version
 
-* Work in a python virtual environment
+* Python virtual environment
   
   - create a python virtual environment named tensorflow 'conda create -n tensorflow python=3.6.3'
 
@@ -24,7 +24,7 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
   - Deactivate virtual environment `deactivate`
 
-* Work with Jupyter Notebook 
+* Jupyter Notebook 
 
   - install Jupyter Notebook `pip install jupyter`
 
@@ -33,9 +33,14 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 ## Dependencies 
 ------
 
-* tensorflow `conda install -c conda-forge tensorflow` or `pip install --ignore-installed --upgrade tensorflow`
+* tensorflow 
+  - `conda install -c conda-forge tensorflow`
+  - Or `pip install --ignore-installed --upgrade tensorflow`
 
-* install opencv `conda install opencv` and then `pip install opencv_python-3.3.1+contrib-cp36-cp36m-win_amd64.whl`
+* install opencv 
+
+  1. `conda install opencv`
+  2. And then `pip install opencv_python-3.3.1+contrib-cp36-cp36m-win_amd64.whl`
 
   > If the message 'ImportError: DLL load failed: The specified module could not be found' show, then download opencv binary file from [this link](https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv) In my case, I’ve used opencv_python-3.3.1+contrib-cp36-cp36m-win_amd64.whl. Go to the directory where the wheel file is located, and run the following command.
 
@@ -54,7 +59,9 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
 * imageio `conda install -c menpo imageio`
 
-* Matplotlib Jupyter Extension `conda install -c conda-forge ipympl` and then `conda install -c conda-forge widgetsnbextension`
+* Matplotlib Jupyter Extension 
+  1. `conda install -c conda-forge ipympl`
+  2. And then `conda install -c conda-forge widgetsnbextension`
 
 * seaborn `conda install -c anaconda seaborn`
 
