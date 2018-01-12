@@ -43,7 +43,11 @@ The following steps are listed based on the image processing order. The images a
 
 * Color detection
 
+  - photo  
+
 <img src="./examples/lane_line.jpg" alt="Overview" width="60%" height="300px">
+
+  - [video](https://www.youtube.com/edit?video_id=8WpxG8XdfZY&video_referrer=watch)
 
 * Gray scale transformation
 
