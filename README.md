@@ -70,6 +70,9 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 * graphviz `conda install -c conda-forge python-graphviz`
   > This package facilitates the creation and rendering from Python.
 
+* scikit-image `conda install -c anaconda scikit-image`
+  > Image processing routines for SciPy
+
 ## Reference
 ------
 * [Installing TensorFlow on Windows](https://www.tensorflow.org/install/install_windows)
