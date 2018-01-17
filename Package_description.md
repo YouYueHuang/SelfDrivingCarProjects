@@ -43,8 +43,7 @@
 * scikit-image `conda install -c anaconda scikit-image`
   > Image processing routines for SciPy
 
-* export packages `conda list -e > requirement.txt`
-* install all packages `conda create --name <env> --requirement.txt`
+* keras `conda install -c anaconda keras`
 
 ## Reference
 ------
