@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.gridspec as gridspec
 import pickle
 from tqdm import tqdm
+import os
 
 def augment_brightness_camera_images(image):
     image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
@@ -60,39 +61,15 @@ def transform_image(img, ang_range, shear_range, trans_range, brightness=0):
         img = augment_brightness_camera_images(img)
     return img
 
-# training_file = 'datasets//train.p'
-# train = None
-# with open(training_file, mode='rb') as f:
-#     train = pickle.load(f)
-
-# MINIMAL_IMAGES_COUNT=600
-# pbar = tqdm(range(len(train['features'])), desc='Image', unit='images')
-# n_augment = 10
-# for i in pbar:
-#     cl=train['labels'][i]
-#     if label_counter[cl] < MINIMAL_IMAGES_COUNT:
-#         for i in range(n_augment):
-#             img = transform_image(im,20,10,1)
-#             img = img.reshape(1,32,32,3)
-#             train['features']=np.concatenate((train['features'],img),axis=0)
-#             train['labels']=np.concatenate((train['labels'],[cl]))
-#         label_counter[cl]=label_counter[cl]+n_augment
-
-# aug_training_file = 'datasets//aug_train.p'
-# with open(aug_training_file, 'wb') as handle:
-#     pickle.dump(train, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-
 def main(argv):
-   inputdir = None
+   training_file = None
 
    try:
-      opts, args = getopt.getopt(argv,"hi:",["idir="])
+      opts, args = getopt.getopt(argv,"hi:m:",["idir="])
    except getopt.GetoptError as err:
       print (str(err))
       print ('please follow the syntax: dataAugmentation.py \
          -i <input directory> \
-         -o <output directory> \
          -m img_min_num')
       sys.exit(2)
 
@@ -105,55 +82,48 @@ def main(argv):
 	         -m img_min_num')
          sys.exit()
       elif opt in ("-i", "--ifile"):
-         inputdir = arg
-         if not os.path.exists(inputdir):
-            print ('input directory does exist>"')
+         training_file = arg
+         if not os.path.exists(training_file):
+            print ('input file does exist>"')
             sys.exit(2)
+      elif opt in ("-m", "--sample_num"):
+         sample_num = arg
 
-   if inputdir is None:
+   if training_file is None:
       print ('input file could not be empty')
       sys.exit(2)
 
-
-   if len(args) == 2:
-      width = args[0]
-      height = args[1]
-   elif len(args) == 0:
-      pass
-   else:
-      print ('incorrect gif size')
-      sys.exit(2) 
    try:
-      width = int(width)
-      height = int(height)
+      sample_num = int(sample_num)
    except ValueError:
-      print ('gif size should be a number')
+      print ('minimum sampel number should be a number')
       sys.exit(2)  
 
-   # gif output path
-   gifSaved_dir = "gif_output"
-   if not os.path.exists(gifSaved_dir):
-       os.makedirs(gifSaved_dir)
+   # augmentation output path
+   aug_training_file = "augdata_{}".format(os.path.basename(training_file))
 
-   # extract only files in input directory
-   for f in listdir(inputdir): 
-      inputFile = join(inputdir, f)
-      if isfile(inputFile) and f.split('.')[-1] == 'mp4':
+   print("data generating starts")
+   train = None
+   with open(training_file, mode='rb') as f:
+      train = pickle.load(f)  
 
-         # load video and set gif fps
-         reader = imageio.get_reader(inputFile)
-         fps = reader.get_meta_data()['fps']
+   MINIMAL_IMAGES_COUNT=600
+   pbar = tqdm(range(len(train['features'])), desc='Image', unit='images')
+   n_augment = 10
+   for i in pbar:
+	   cl=train['labels'][i]
+	   if label_counter[cl] < MINIMAL_IMAGES_COUNT:
+	       for i in range(n_augment):
+	           img = transform_image(im,20,10,1)
+	           img = img.reshape(1,32,32,3)
+	           train['features']=np.concatenate((train['features'],img),axis=0)
+	           train['labels']=np.concatenate((train['labels'],[cl]))
+	       label_counter[cl]=label_counter[cl]+n_augment
 
-         print("gif generating starts")
-         
-         out_path = join(gifSaved_dir,basename(f).split('.')[0] + '.gif')
+   with open(aug_training_file, 'wb') as handle:
+	   pickle.dump(train, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-         with imageio.get_writer(out_path, mode='I', fps=fps) as writer:
-             for im in reader:
-                 resized_image = cv2.resize(im, (width, height)) 
-                 writer.append_data(resized_image)
-
-         print ('Output file is :', out_path)
+   print ('Output file is :', aug_data)
 
 if __name__ == "__main__":
-   	main(sys.argv[1:])
+   main(sys.argv[1:])
