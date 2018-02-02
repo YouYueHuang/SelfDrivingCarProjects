@@ -18,11 +18,17 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
 * Python virtual environment
   
-  - create a python virtual environment named tensorflow 'conda create -n tensorflow python=3.6.3'
+  - create a python virtual environment named tensorflow `conda create -n tensorflow python=3.6.3`
 
   - activate virtual environment `activate tensorflow`
 
   - Deactivate virtual environment `deactivate`
+
+* Installing a different version of Python
+
+  - To create the new environment for Python 3.6, run `conda create -n py36 python=3.6 anaconda`
+  - Do the similar for Python 2.7, run `conda create -n py36 python=3.6 anaconda`
+  - To check the verision, activate the virtual environment and run `python --version`
 
 * Jupyter Notebook 
 
