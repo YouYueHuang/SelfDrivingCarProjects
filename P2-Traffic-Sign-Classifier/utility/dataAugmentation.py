@@ -62,68 +62,66 @@ def transform_image(img, ang_range, shear_range, trans_range, brightness=0):
     return img
 
 def main(argv):
-   training_file = None
-
-   try:
-      opts, args = getopt.getopt(argv,"hi:m:",["idir="])
-   except getopt.GetoptError as err:
-      print (str(err))
-      print ('please follow the syntax: dataAugmentation.py \
-         -i <input directory> \
-         -m img_min_num')
-      sys.exit(2)
+    training_file = None
+    try:
+        opts, args = getopt.getopt(argv,"hi:m:",["idir="])
+    except getopt.GetoptError as err:
+        print (str(err))
+        print ('please follow the syntax: dataAugmentation.py \
+                 -i <input directory> \
+                 -m img_min_num')
+        sys.exit(2)
 
    # argument parsing
-   for opt, arg in opts:
-      if opt == '-h':
-	      print ('please follow the syntax: dataAugmentation.py \
-	         -i <input directory> \
-	         -o <output directory> \
-	         -m img_min_num')
-         sys.exit()
-      elif opt in ("-i", "--ifile"):
-         training_file = arg
-         if not os.path.exists(training_file):
-            print ('input file does exist>"')
-            sys.exit(2)
-      elif opt in ("-m", "--sample_num"):
-         sample_num = arg
+    for opt, arg in opts:
+        if opt == '-h':
+            print ('please follow the syntax: dataAugmentation.py \
+           -i <input directory> \
+           -m img_min_num')
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            training_file = arg
+            if not os.path.exists(training_file):
+                print ('input file does exist>"')
+                sys.exit(2)
+        elif opt in ("-m", "--sample_num"):
+            sample_num = arg
 
-   if training_file is None:
-      print ('input file could not be empty')
-      sys.exit(2)
+    if training_file is None:
+        print ('input file could not be empty')
+        sys.exit(2)
 
-   try:
-      sample_num = int(sample_num)
-   except ValueError:
-      print ('minimum sampel number should be a number')
-      sys.exit(2)  
+    try:
+        sample_num = int(sample_num)
+    except ValueError:
+        print ('minimum sampel number should be a number')
+        sys.exit(2)  
 
-   # augmentation output path
-   aug_training_file = "augdata_{}".format(os.path.basename(training_file))
+    # augmentation output path
+    aug_training_file = "augdata_{}".format(os.path.basename(training_file))
 
-   print("data generating starts")
-   train = None
-   with open(training_file, mode='rb') as f:
-      train = pickle.load(f)  
+    print("data generating starts")
+    train = None
+    with open(training_file, mode='rb') as f:
+        train = pickle.load(f)  
 
-   MINIMAL_IMAGES_COUNT=600
-   pbar = tqdm(range(len(train['features'])), desc='Image', unit='images')
-   n_augment = 10
-   for i in pbar:
-	   cl=train['labels'][i]
-	   if label_counter[cl] < MINIMAL_IMAGES_COUNT:
-	       for i in range(n_augment):
-	           img = transform_image(im,20,10,1)
-	           img = img.reshape(1,32,32,3)
-	           train['features']=np.concatenate((train['features'],img),axis=0)
-	           train['labels']=np.concatenate((train['labels'],[cl]))
-	       label_counter[cl]=label_counter[cl]+n_augment
+    MINIMAL_IMAGES_COUNT=600
+    pbar = tqdm(range(len(train['features'])), desc='Image', unit='images')
+    n_augment = 10
+    for i in pbar:
+        cl=train['labels'][i]
+        if label_counter[cl] < MINIMAL_IMAGES_COUNT:
+            for i in range(n_augment):
+                img = transform_image(im,20,10,1)
+                img = img.reshape(1,32,32,3)
+                train['features']=np.concatenate((train['features'],img),axis=0)
+                train['labels']=np.concatenate((train['labels'],[cl]))
+                label_counter[cl]=label_counter[cl]+n_augment
 
-   with open(aug_training_file, 'wb') as handle:
-	   pickle.dump(train, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    with open(aug_training_file, 'wb') as handle:
+        pickle.dump(train, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-   print ('Output file is :', aug_data)
+    print ('Output file is :', aug_data)
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
