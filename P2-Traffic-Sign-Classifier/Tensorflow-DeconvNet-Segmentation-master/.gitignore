@@ -1,0 +1,6 @@
+__pycache__/
+.DS_Store
+*.pyc
+*.tfrecords
+*.old
+train_log
