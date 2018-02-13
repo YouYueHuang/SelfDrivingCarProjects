@@ -8,126 +8,61 @@ In this project, I will apply deep neural networks and convolutional neural netw
 
 Data exploration
 ---
-Let's begin with the data exploration. The training data set consists of 43 classes of traffic sign images 32x32 in size, with the size of train set 34799 and the size of test set 12630.
+Let's begin with the data exploration. 
+
+* The training data set consists of 43 classes of colored traffic sign images 32x32 in size.
+* The size of training set: 34799 
+* The size of validation set: 4410.
+* The size of test set: 12630.
 
 Sample images of each class and its corresponding frequency in the training data set is shown below. 
 
-![probability_distribution](img/distribution_of_class_frequency.PNG)
-![frequency_distribution](img/distribution_of_class_frequency_notNormalized.PNG)
+[//]: # (Image References)
 
-Class Table
+[image1]: ./img/dataset_samples.png "Dataset Samples Visualization"
+[image2]: ./img/dataset_hist.png "Training Dataset Histogram"
+[image9]: ./img/distribution_of_class_frequency.png "Training Dataset probability distribution"
+[image3]: ./img/confusion_matrix.png "Confustion matrix of validation dataset"
+[image4]: ./img/test_samples.png "Test Samples"
+[image5]: ./img/test_samples_reuslts.png "Test Samples Results "
+[image6]: ./img/inception_layer_featuremaps.png "Featuremaps visualization of Inception layer 1"
+[image7]: ./img/inception_block.png "Inception Block"
+[image8]: ./img/Network_model.png "Network Model"
+
+The following figure shows samples of training dataset.
+![alt text][image1]
+
+Next, We plotted the histogram of Training data to give intuition on the frequency distrpution.
+![alt text][image2]
+
+Data Pipeline
 ---
 
-|ClassId	|SignName|
-|---|---|
-|0	|Speed limit (20km/h)|
-|1	|Speed limit (30km/h)|
-|2	|Speed limit (50km/h)|
-|3	|Speed limit (60km/h)|
-|4	|Speed limit (70km/h)|
-|5	|Speed limit (80km/h)|
-|6	|End of speed limit (80km/h)|
-|7	|Speed limit (100km/h)|
-|8	|Speed limit (120km/h)|
-|9	|No passing|
-|10	|No passing for vehicles over 3.5 metric tons|
-|11	|Right-of-way at the next intersection|
-|12	|Priority road|
-|13	|Yield|
-|14	|Stop|
-|15	|No vehicles|
-|16	|Vehicles over 3.5 metric tons prohibited|
-|17	|No entry|
-|18	|General caution|
-|19	|Dangerous curve to the left|
-|20	|Dangerous curve to the right|
-|21	|Double curve|
-|22	|Bumpy road|
-|23	|Slippery road|
-|24	|Road narrows on the right|
-|25	|Road work|
-|26	|Traffic signals|
-|27	|Pedestrians|
-|28	|Children crossing|
-|29	|Bicycles crossing|
-|30	|Beware of ice/snow|
-|31	|Wild animals crossing|
-|32	|End of all speed and passing limits|
-|33	|Turn right ahead|
-|34	|Turn left ahead|
-|35	|Ahead only|
-|36	|Go straight or right|
-|37	|Go straight or left|
-|38	|Keep right|
-|39	|Keep left|
-|40	|Roundabout mandatory|
-|41	|End of no passing|
-|42	|End of no passing by vehicles over 3.5 metric tons| 
+* Dataset Preprocessing
 
-Strategies
----
-In the beginning, no sampling approach was appied for generating samples of a batch 
+Image normalization: subtracting mean images obtained from training dataset but this step tends to give worse accuracy. 
+Dataset shuffling: In the beginning, no sampling approach was appied for generating samples of a batch 
+Data Augmentation: Due to the lack of enough samples of some traffic signs, I applied data augmentation the benefit of augmenting. creates additional samples in feature-space. creating additional training samples with affine transformation: translation, rotation, shearing and scaling. After data augmentation, the training size becomes 41469.
 
+* Model architecture: The training model is built using Tensorflow containing 5 layers as described below:
 
-The issues
----
-In the beginning 
+* Batch Normalizaion: It is applied for preventing the saturation of the filters after activation.
 
-1. Batch Normalizaion
-Due to the lack of enough samples of some traffic signs, 
+* Early stopping: I applied Early stopping for regularization to avoid overfitting
 
-2. Data Augmentation
-I applied data augmentation the benefit of augmenting. creates additional samples in feature-space.
+Some interesting questions that we sought to answer, is how much data is enough? For most classification systems, more data is better. Thus, the performance (test error %) that can be achieved by augmenting classifier training with synthetic data, is likely to be bounded by training on the equivalment amount of real data.
 
-creating additional training samples with affine transformation: translation, rotation, shearing and scaling
+Evaluation: There is no golden rule for a good validation frequency. I computed the validation error after each epoch.
 
-After data augmentation, the training size becomes 41469.
+without maxpool layer: accuracy is 0.93
 
-Some interesting questions that we sought to answer, is how much data is enough? For most classification systems, more
-data is better. And more real data is better than more synthetic (Generative 
-data. In none of the experiments did the performance of the
-system trained on synthetic data outperform the system trained
-on real data. Thus, the performance (test error %) that can be
-achieved by augmenting classifier training with synthetic data,
-is likely to be bounded by training on the equivalment amount
-of real data.
-
-
-The Architecture: The training model is built using Tensorflow containing 5 layers as described below:
-
-* Parameters:
-  * EPOCHS = 4
-  * BATCH_SIZE = 150
-  * LEARNING_RATE = 0.0001
-
-
-* Layer 1:
-  * Convolution of 5x5 kernel, 1 stride and 16 feature maps
-  * Activation: ReLU
-  * Pooling: 2x2 kernel and 2 stride
-* Layer 2:
-  * Convolution of 5x5 kernel, 1 stride and 32 feature maps
-  * Activation: ReLU
-  * Pooling: 2x2 kernel and 2 stride
-* Layer 3:
-  * Fully connected layer with 516 units
-  * Activation: ReLU with dropout of 25%
-* Layer 4:
-  * Fully connected layer with 360 units
-  * Activation: ReLU with dropout of 25%
-* Layer 5:
-  * Fully connected layer with 43 units for network output
-  * Activation Softmax
+Some kind of nonlinearity is already present in the networks through the activation functions. Average pooling also does not introduce any additional nonlinearity, it is a linear operation so only max pooling is nonlinear. And I think the question is more if you want the regularization that pooling brings you - a little more translational invariance.
 
 
 the main key in this architecture
 
-data augmentation
-regularization
-
-
-
-
+* data augmentation
+* regularization
 
 conv-relu-batchnorm is a common triplet.
 Pooling reduces signal and makes the model more robust against spatial invariance1, so it can not be used very much, just the exact amount of maxpooling will make the model work fine.
@@ -148,20 +83,93 @@ This architecture is quite effective in various aspects including quotient betwe
 	</tr>
 </table>
 
+In conclusion, we have shown that with small amounts of training data, our model show poor accuracy in prediction. With data augmentaion, the performance improved almost 50%
 
+| Parameter         						| Without Data Augmentation	| With Data Augmentation |
+|:-----------------------------------------:|:-------------------------:|:----------------------:| 
+| Learning rate        						| 0.0001   					| 	0.0001				 |
+| Batch size        						| 128   					| 	128					 |
+| Epoch count        						| 50   						| 	50					 |
+| Keep probability for Loclization network  | 0.4   					| 	0.4					 |
+| Keep probability for feature maps        	| 0.5   					| 	0.5					|
+| Keep probability for fully connected layer| 0.5  						| 	0.5					|
+| Results        							|    						| 						|
+| training set accuracy        				| 2.8 %						| 53.6%					|	
+| validation set accuracy        			| 3.1%						| 48.5%					|
+| test set accuracy        					| 2.4%						| 49.3%					|
 
-how you addressed each point.  You should include a detailed description of the code used in each step 
-with line-number references and code snippets where necessary), 
-links to other supporting documents or external references.  
-You should include images in your writeup to demonstrate how your code works with examples.  
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td, th {
+    border: 2px solid #333333;
+    text-align: center;
+    padding: 8px;
 
-The Project
----
-The goals / steps of this project are the following:
-* Load the data set
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+}
+
+h2{
+	text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+
+<h2>Model architecture</h2>
+
+<table>
+  <tr>
+    <th>Structure/Model</th>
+    <th>Mynet_A</th>
+    <th>Mynet_B</th>
+    <th>LENET</th>
+  </tr>
+  <tr>
+    <td>Layer 1</td>
+    <td colspan=3>Convolution<br>Activation(Relu)</td>
+  </tr>
+  <tr>
+    <td>Layer 2</td>
+    <td></td>
+    <td colspan=2>MaxPooling</td>
+  </tr>
+  <tr>
+    <td>Layer 3</td>
+    <td colspan=3>Convolution<br>Activation(Relu)</td>
+  </tr>
+  <tr>
+    <td>Layer 4</td>
+    <td></td>
+    <td colspan=2>MaxPooling</td>
+  </tr>
+  <tr>
+    <td>Layer 5</td>
+    <td colspan=3>Fully connected<br>Activation(Relu)</td>
+  </tr>
+  <tr>
+    <td>Layer 6</td>
+    <td colspan=2>Fully connected<br>Activation(Relu)</td>
+    <td>Fully connected (output)</td>
+  </tr>
+  <tr>
+    <td>Layer 7</td>
+    <td colspan=2>Fully connected (output)</td>
+    <td></td>
+  </tr>
+</table>
+
+### Refrences
+
+1. Mrinal Haloi 2015 "[Traffic Sign Classification Using Deep Inception Based Convolutional Networks](https://arxiv.org/abs/1511.02992)". arXiv:1511.02992
+2. Max Jaderberg and Karen Simonyan and Andrew Zisserman and Koray Kavukcuoglu 2015 "[Spatial Transformer Networks](https://arxiv.org/abs/1506.02025)". arXiv:1506.02025
+3. Christian Szegedy and Vincent Vanhoucke and Sergey Ioffe and Jonathon Shlens and Zbigniew Wojna 2015 "[Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567)". arXiv:1512.00567
+4. https://github.com/daviddao/spatial-transformer-tensorflow
+5. [visualize feature maps](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture12.pdf)
