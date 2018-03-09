@@ -69,9 +69,8 @@ Pooling reduces signal and makes the model more robust against spatial invarianc
 We need a fully connected layer at the end to classify the images to their classes. The combination of L2 + batchnorm will act as a regularizer, preventing overfitting and keeping the weights small so that the model is able to generalize pretty well.
 This architecture is quite effective in various aspects including quotient between params, complexity, time to train and accuracy.
 
-[Example of Tensorboard](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/tensorboard_basic.py)
-[Example of saving and restoring model in Tensorflow](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/save_restore_model.py)
-[The code of Data augmentation](https://github.com/aleju/imgaug) from aleje.
+
+
 <table>
 	<tr>
 		<td>Origin image</td>
@@ -98,7 +97,6 @@ In conclusion, we have shown that with small amounts of training data, our model
 | validation set accuracy        			| 3.1%						| 48.5%					|
 | test set accuracy        					| 2.4%						| 49.3%					|
 
-<head>
 <style>
 table {
     font-family: arial, sans-serif;
@@ -121,8 +119,6 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 </style>
-</head>
-
 <h2>Model architecture</h2>
 
 <table>
@@ -173,3 +169,7 @@ tr:nth-child(even) {
 3. Christian Szegedy and Vincent Vanhoucke and Sergey Ioffe and Jonathon Shlens and Zbigniew Wojna 2015 "[Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567)". arXiv:1512.00567
 4. https://github.com/daviddao/spatial-transformer-tensorflow
 5. [visualize feature maps](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture12.pdf)
+6. [Example of Tensorboard](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/tensorboard_basic.py)
+7. [Example of saving and restoring model in Tensorflow](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/save_restore_model.py)
+8. [The code of Data augmentation](https://github.com/aleju/imgaug) from aleje.
+9. [Understanding data augmentation for classification:when to warp?](https://arxiv.org/pdf/1609.08764.pdf)
