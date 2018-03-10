@@ -36,6 +36,11 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
   - Launch an jupyter notebook server `jupyter notebook`
 
+* For behavior cloning,
+  
+  - conda install -c conda-forge eventlet
+  - conda install -c conda-forge python-socketio
+
 ## Dependencies 
 ------
 * export packages `conda list -e > requirement.txt`
