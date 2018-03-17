@@ -1,5 +1,0 @@
-model_checkpoint_path: "valid_0.13.ckpt-100"
-all_model_checkpoint_paths: "..\\mynet_A_valid_0.03.ckpt"
-all_model_checkpoint_paths: "..\\mynet_A_valid_0.13.ckpt"
-all_model_checkpoint_paths: "..\\mynet_A_valid_0.10.ckpt-100"
-all_model_checkpoint_paths: "valid_0.13.ckpt-100"

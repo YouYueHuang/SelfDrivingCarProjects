@@ -1,0 +1,2 @@
+model_checkpoint_path: "fake_Lenet.ckpt"
+all_model_checkpoint_paths: "fake_Lenet.ckpt"
