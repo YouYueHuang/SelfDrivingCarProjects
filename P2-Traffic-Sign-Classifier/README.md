@@ -6,14 +6,21 @@ Overview
 ---
 In this project, I will apply deep neural networks and convolutional neural networks to classify traffic signs. The traffic sign images are from [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, I will then try out your model on images of German traffic signs from other external sources.
 
+Files
+---
+Ipython notebook with code
+HTML output of the code
+
 Data exploration
 ---
-Let's begin with the data exploration. 
+1. Dataset Summary
 
-* The training data set consists of 43 classes of colored traffic sign images 32x32 in size.
-* The size of training set: 34799 
-* The size of validation set: 4410.
-* The size of test set: 12630.
+  * The training data set consists of 43 classes of colored traffic sign images 32x32 in size.
+  * The size of training set: 34799 
+  * The size of validation set: 4410.
+  * The size of test set: 12630.
+
+2. Exploratory Visualization
 
 Sample images of each class and its corresponding frequency in the training data set is shown below. 
 
