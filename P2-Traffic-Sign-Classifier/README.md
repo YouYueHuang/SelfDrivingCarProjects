@@ -4,229 +4,208 @@
 
 Overview
 ---
-In this project, I will apply deep neural networks and convolutional neural networks to classify traffic signs. The traffic sign images are from [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, I will then try out your model on images of German traffic signs from other external sources.
+In this project, deep learning techniques and convolutional neural networks were applied to classify traffic signs. The traffic sign images are from [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After training, the images of the traffic signs from the Internet were incorporated to test the performance on the model .
 
 Files
 ---
-Ipython notebook with code
-HTML output of the code
+The structure and useage of the files in this repository are as follows:
+
+1. `Main_pipeline.ipynb` and `Main_pipeline.html`
+  - This part mainly contains the data exploration, visualization, preprocessing, model architecture and evaluation on test images.
+
+2. `model_ec2.ipynb`
+  - Most part of this file are the same the previous one. The differences are the code and training procedure. This file was run on AWS EC2 with GPU, so more parameter tuning were tried on the files. Also, some code change on Keras was performed to solve the compatibility issue. Some details could be found in the `Readme.md` of another depository [test_on_AWS_EC2](https://github.com/YouYueHuang/test_on_AWS_EC2)
+
+3. `model_reshuffled_data.ipynb`
+  - Most part of this file are the same the previous one. The only difference is the data. The training, test and validation sets are under mixing, shuffling and partitioning to recreate new datasets.
+
+4. `download_file.py`
+  - This file contains the functions to download the data because the original data size is over 100 MB and it could not be uploaded to Github.
+
+5. `test_images`
+  - It contains 10 images from the Internet for testing, and the file name is its class. Each image are resized to 32*32 already.
+  - In web_crawler, there are 5 directories and test images with the file name of its class. They were crawled with [icrawler](https://pypi.python.org/pypi/icrawler), and the image size are not a fixed number.
+
+6. `model`
+  - It contains the weight of trained model. All are in the directory of `EC2_model`
+
+7. `img`
+  - It stores the images during analysis
+
+8. `test`
+  - It contains some functions for preprocessing (grayscale, contrast-limited adaptive histogram equalization, histogram of oriented gradients, data augmentation, data shuffeling and partitioning, stratified sampling, Xavier weight initialization), visualization(tensorboard, graphviz), CNN model framework(inception, devolution net). 
+
+9. `ref`
+  - It stores the papers of related research work.
+
+10. `logs`
+  - It stores the summary of model training log in previous models, and it is mainly for visualization with TensorBoard. It is abandoned for this moment.
+
+[//]: # (Image References)
+
+[image10]: ./img/traffic_signs.png "traffic_signs"
+[image2]: ./img/dataset_histogram.png "The Histogram of training set distribution"
+[image9]: ./img/distribution_of_class_frequency.png "Training Dataset probability distribution"
+[image1]: ./img/dataset_samples.png "Dataset samples visualization"
+[image3]: ./img/confusion_matrix.png "Confustion matrix of validation dataset"
+
+[image4]: ./img/top5_prediction_1.png "top5 prediction of test Samples 1"
+[image5]: ./img/top5_prediction_2.png "top5 prediction of test Samples 2"
+[image6]: ./img/inception_layer_featuremaps.png "Featuremaps visualization of Inception layer 1"
+[image7]: ./img/inception_block.png "Inception Block"
+[image8]: ./img/Network_model.png "Network Model"
 
 Data exploration
 ---
 1. Dataset Summary
 
   * The training data set consists of 43 classes of colored traffic sign images 32x32 in size.
-  * The size of training set: 34799 
-  * The size of validation set: 4410.
-  * The size of test set: 12630.
+  * The number of training set: 34799.
+  * The number of validation set: 4410.
+  * The number of test set: 12630.
 
 2. Exploratory Visualization
 
-Sample images of each class and its corresponding frequency in the training data set is shown below. 
+The following figure shows sample image of each class.
+![alt text][image10]
 
-[//]: # (Image References)
-
-[image1]: ./img/dataset_samples.png "Dataset Samples Visualization"
-[image2]: ./img/dataset_hist.png "Training Dataset Histogram"
-[image9]: ./img/distribution_of_class_frequency.png "Training Dataset probability distribution"
-[image3]: ./img/confusion_matrix.png "Confustion matrix of validation dataset"
-[image4]: ./img/test_samples.png "Test Samples"
-[image5]: ./img/test_samples_reuslts.png "Test Samples Results "
-[image6]: ./img/inception_layer_featuremaps.png "Featuremaps visualization of Inception layer 1"
-[image7]: ./img/inception_block.png "Inception Block"
-[image8]: ./img/Network_model.png "Network Model"
-
-The following figure shows samples of training dataset.
-![alt text][image1]
+Normalized frequencies of each class in the training, validation and test set are shown below. It shows that the original datasets were sampled evenly for each class, so the these three sets follows the same distribution. 
+![alt text][image9]
 
 Next, We plotted the histogram of Training data to give intuition on the frequency distrpution.
 ![alt text][image2]
 
 Data Pipeline
 ---
+1. Preprocessing
 
-* Dataset Preprocessing
+  - [Data augmentation](https://github.com/vxy10/ImageAugmentation): Due to limited data and the class imbalance, additional data was generated by affine transformation including: 
+    (1) rotation with random number generated between +/- 15 degress 
+    (2) translation by +/- 10 pixels along vertical and horizontal direction
+    (3) shearing
 
-Image normalization: subtracting mean images obtained from training dataset but this step tends to give worse accuracy. 
-Dataset shuffling: In the beginning, no sampling approach was appied for generating samples of a batch 
-Data Augmentation: Due to the lack of enough samples of some traffic signs, I applied data augmentation the benefit of augmenting. creates additional samples in feature-space. creating additional training samples with affine transformation: translation, rotation, shearing and scaling. After data augmentation, the training size becomes 41469.
+    After data augmentation, the size of of each class in training set is at least 600. The size of training set becomes 41469.
 
-* Model architecture: The training model is built using Tensorflow containing 5 layers as described below:
-
-* Batch Normalizaion: It is applied for preventing the saturation of the filters after activation.
-
-* Early stopping: I applied Early stopping for regularization to avoid overfitting
-
-Some interesting questions that we sought to answer, is how much data is enough? For most classification systems, more data is better. Thus, the performance (test error %) that can be achieved by augmenting classifier training with synthetic data, is likely to be bounded by training on the equivalment amount of real data.
-
-Evaluation: There is no golden rule for a good validation frequency. I computed the validation error after each epoch.
-
-without maxpool layer: accuracy is 0.93
-
-Some kind of nonlinearity is already present in the networks through the activation functions. Average pooling also does not introduce any additional nonlinearity, it is a linear operation so only max pooling is nonlinear. And I think the question is more if you want the regularization that pooling brings you - a little more translational invariance.
-
-
-the main key in this architecture
-
-* data augmentation
-* regularization
-
-conv-relu-batchnorm is a common triplet.
-Pooling reduces signal and makes the model more robust against spatial invariance1, so it can not be used very much, just the exact amount of maxpooling will make the model work fine.
-We need a fully connected layer at the end to classify the images to their classes. The combination of L2 + batchnorm will act as a regularizer, preventing overfitting and keeping the weights small so that the model is able to generalize pretty well.
-This architecture is quite effective in various aspects including quotient between params, complexity, time to train and accuracy.
-
-
-
-<table>
-	<tr>
-		<td>Origin image</td>
-		<td>Affine Transformed images</td>
-	</tr> 
-	<tr>
-		<td><img src='./img/sample_traffic_sign.jpg' style='width: 500px;'></td>
-		<td><img src='./img/dataAugment.png' style='width: 500px;'></td>
-	</tr>
-</table>
-
-In conclusion, we have shown that with small amounts of training data, our model show poor accuracy in prediction. With data augmentaion, the performance improved almost 50%
-
-| Parameter         						| Without Data Augmentation	| With Data Augmentation |
-|:-----------------------------------------:|:-------------------------:|:----------------------:| 
-| Learning rate        						| 0.0001   					| 	0.0001				 |
-| Batch size        						| 128   					| 	128					 |
-| Epoch count        						| 50   						| 	50					 |
-| Keep probability for Loclization network  | 0.4   					| 	0.4					 |
-| Keep probability for feature maps        	| 0.5   					| 	0.5					|
-| Keep probability for fully connected layer| 0.5  						| 	0.5					|
-| Results        							|    						| 						|
-| training set accuracy        				| 2.8 %						| 53.6%					|	
-| validation set accuracy        			| 3.1%						| 48.5%					|
-| test set accuracy        					| 2.4%						| 49.3%					|
-
-<style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 2px solid #333333;
-    text-align: center;
-    padding: 8px;
-
-}
-
-h2{
-	text-align: center;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-<h2>Model architecture</h2>
-
+The example of augmented data is as follows
 <table>
   <tr>
-    <th>Structure/Model</th>
-    <th>Mynet_A</th>
-    <th>Mynet_B</th>
-    <th>LENET</th>
-  </tr>
+    <td>Origin image</td>
+    <td>Affine Transformed images</td>
+  </tr> 
   <tr>
-    <td>Layer 1</td>
-    <td colspan=3>Convolution<br>Activation(Relu)</td>
-  </tr>
-  <tr>
-    <td>Layer 2</td>
-    <td></td>
-    <td colspan=2>MaxPooling</td>
-  </tr>
-  <tr>
-    <td>Layer 3</td>
-    <td colspan=3>Convolution<br>Activation(Relu)</td>
-  </tr>
-  <tr>
-    <td>Layer 4</td>
-    <td></td>
-    <td colspan=2>MaxPooling</td>
-  </tr>
-  <tr>
-    <td>Layer 5</td>
-    <td colspan=3>Fully connected<br>Activation(Relu)</td>
-  </tr>
-  <tr>
-    <td>Layer 6</td>
-    <td colspan=2>Fully connected<br>Activation(Relu)</td>
-    <td>Fully connected (output)</td>
-  </tr>
-  <tr>
-    <td>Layer 7</td>
-    <td colspan=2>Fully connected (output)</td>
-    <td></td>
+    <td><img src='./img/sample_traffic_sign.jpg' style='width: 500px;'></td>
+    <td><img src='./img/dataAugment.png' style='width: 500px;'></td>
   </tr>
 </table>
+
+  - Image normalization: The RGB value of a image is divided by 255, and the range is between 0~1.
+  - Dataset shuffling: It is applied to increase the robustness.
+
+2. Model architecture
+
+  - Composition: There are three types of component in this architecture (1)conv-L2-batchnorm-relu (2)maxpool-dropout (3) fully connection-relu-dropout. Pooling reduces signal and makes the model more robust against spatial invariance. The exact amount of maxpooling will make the model work fine and reduce the parameter. Fully connected layer are applied at the end to classify the images to their classes. 
+
+  - Regularization: The combination of L2 and dropout will act as a regularizer, preventing overfitting and keeping the weights small so that the model is able to generalize pretty well.
+
+  - Batch Normalizaion: It is applied for preventing the interaction of each layer and the saturation of the filters after activation.
+
+The training model is built using keras containing layers as described below:
 
 ```python 
-def create_model_2(baseMapNum = 32, weight_decay = 1e-4, num_classes = 43):    
-    model = Sequential()
-    # 1: convolution
-    model.add(Conv2D(baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay), input_shape=X_train_norm.shape[1:]))
+
+    # 1: convolutional layer: kernel size 3x3 (input), L2 regularization with weight_decay 1e-4
+    model.add(Conv2D(32, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay), input_shape=X_train.shape))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     
-    # 2: maxpool
+    # 2: maxpool layer: kernel size 2x2
     model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
     model.add(Dropout(0.2))
 
-    # 3: convolution
-    model.add(Conv2D(2*baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
+    # 3: convolutional layer: kernel size 3x3, L2 regularization with weight_decay 1e-4
+    model.add(Conv2D(64, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
-    # 2: maxpool
+    # 4: maxpool layer: kernel size 2x2
     model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
     model.add(Dropout(0.2))
     
-    # 3: convolution
-    model.add(Conv2D(4*baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
+    # 5: convolutional layer: kernel size 3x3, L2 regularization with weight_decay 1e-4
+    model.add(Conv2D(128, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     
-    # 2: maxpool
+    # 6: maxpool layer: kernel size 2x2
     model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
     model.add(Dropout(0.3))
     
     model.add(Flatten())
     
+    # 7: fully-connected layter: 256 neurons
     model.add(Dense(256))
-#     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.3))
     
+    # 8: fully-connected layter: 128 neurons
     model.add(Dense(128))
-#     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.1))
     
-    model.add(Dense(num_classes))
+    # 9: fully-connected layter: 43 neurons with softmax function (output)
+    model.add(Dense(43))
     model.add(Activation('softmax'))
-    return model
 
-model2 = create_model_2(weight_decay = 2e-4)
+    # total parameters: 427,755
+    # model size: 1,718 KB
 ```
+
+3. Early stopping
+  - It is applied for regularization to avoid overfitting. The accuracy of test set will increase and then decrease due to the overfitting. Therefore, if the accuracy achieve 93%, the training will be stopped.
+
+4. Evaluation
+  - There is no golden rule for a good validation frequency. Validation error was computed after each epoch.
+
+Result
+---
+
+The following figure shows the performance in each class.
+![alt text][image3]
+
+There are 5 parts with relatively low performace:
+(1) 58 images of class 4 and 27 images of class 8 were misclassied as class 19
+(2) 26 images of class 7 were misclassied as class 5
+(3) 16 images of class 31 were misclassied as class 23
+(4) 19 images of class 16 were misclassied as class 41
+
+
+Conclusion
+---
+
+* Model architecture
+
+Without the dropout, the accuracy on training set can be as high as over 99%, but it causes overfitting and leads to low accuracy on other sets. Without maxpool layer, the space use could be as high as 1 GB. 
+
+* Test on images from the Internet
+
+When image is well processed and selected, the accuracy on test images could almost achieve accuracy of 100%, but the signs could not be recognized if we used the test images from the Internet. One of the reasons is the issue of size. The image size and ratio from the Internet are quite diverse. Without the aid of object localization, there might be many noises on the image (e.g, car, electric pole, building, etc.) After resizing, the images are seriously distorted, which makes the key features harder to be detected in the model.
+
+* The accuracy and loss
+
+The model can achieve 99% accuracy on training set without regularization techniques(e.g, dropout, L2), but the accuracy on test set and validation set are about 93% and 93.5% respectively. The loss on training, test and validation set are 0.360, 0.401 and 0.057. The high accuracy on the training set but low accuracy on the validation and test set implies overfitting. The change of L2 just made the model more underfitting on both training set and validation set, so the fine-funning works are done on the adjustment of keeping probability. The policy of tuning was to reduce the difference of loss on training set and validation set while achieving 93% accuracy.
+
+* The issues in preprocessing
+
+Due to the class imbalance, a data augmentation algorithm found on Github was applied to compensate the lack of traffic signs of some categories. The algorithm calculates the number of a class and decided if the image of that class needs to be generated. If the number is less than the threshold, the algorithm will generate 10 images and append them to the origin image. According to the result of error analysis, there was a trend that the misclassified images occured in series. After checking the misclassified images, it turns out that the preprocessing could not enhance the contrast of the dark images well (some are even worse) so that the number of wrongly processed images were generated. If preprocessed images owns some features similar to other classes, that might confuse the model and misclass the image.
+
 
 
 ### Refrences
 
-1. Mrinal Haloi 2015 "[Traffic Sign Classification Using Deep Inception Based Convolutional Networks](https://arxiv.org/abs/1511.02992)". arXiv:1511.02992
-2. Max Jaderberg and Karen Simonyan and Andrew Zisserman and Koray Kavukcuoglu 2015 "[Spatial Transformer Networks](https://arxiv.org/abs/1506.02025)". arXiv:1506.02025
-3. Christian Szegedy and Vincent Vanhoucke and Sergey Ioffe and Jonathon Shlens and Zbigniew Wojna 2015 "[Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567)". arXiv:1512.00567
-4. https://github.com/daviddao/spatial-transformer-tensorflow
-5. [visualize feature maps](http://cs231n.stanford.edu/slides/2017/cs231n_2017_lecture12.pdf)
-6. [Example of Tensorboard](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/tensorboard_basic.py)
-7. [Example of saving and restoring model in Tensorflow](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/save_restore_model.py)
-8. [The code of Data augmentation](https://github.com/aleju/imgaug) from aleje.
-9. [Understanding data augmentation for classification:when to warp?](https://arxiv.org/pdf/1609.08764.pdf)
+1. [Example of Tensorboard](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/tensorboard_basic.py)
+2. [Example of saving and restoring model in Tensorflow](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/save_restore_model.py)
+3. [The code of Data augmentation](https://github.com/aleju/imgaug) from aleje.
+4. [Understanding data augmentation for classification:when to warp?](https://arxiv.org/pdf/1609.08764.pdf)
+
+The following figure shows some sample images of each class to visualize the general view.
+![alt text][image1]
