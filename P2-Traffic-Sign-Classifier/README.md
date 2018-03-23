@@ -169,6 +169,56 @@ tr:nth-child(even) {
   </tr>
 </table>
 
+```python 
+def create_model_2(baseMapNum = 32, weight_decay = 1e-4, num_classes = 43):    
+    model = Sequential()
+    # 1: convolution
+    model.add(Conv2D(baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay), input_shape=X_train_norm.shape[1:]))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    
+    # 2: maxpool
+    model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
+    model.add(Dropout(0.2))
+
+    # 3: convolution
+    model.add(Conv2D(2*baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+
+    # 2: maxpool
+    model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
+    model.add(Dropout(0.2))
+    
+    # 3: convolution
+    model.add(Conv2D(4*baseMapNum, (3,3), padding='same', kernel_regularizer=regularizers.l2(weight_decay)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    
+    # 2: maxpool
+    model.add(MaxPooling2D(pool_size=(2,2), padding='same'))
+    model.add(Dropout(0.3))
+    
+    model.add(Flatten())
+    
+    model.add(Dense(256))
+#     model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(0.3))
+    
+    model.add(Dense(128))
+#     model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(0.1))
+    
+    model.add(Dense(num_classes))
+    model.add(Activation('softmax'))
+    return model
+
+model2 = create_model_2(weight_decay = 2e-4)
+```
+
+
 ### Refrences
 
 1. Mrinal Haloi 2015 "[Traffic Sign Classification Using Deep Inception Based Convolutional Networks](https://arxiv.org/abs/1511.02992)". arXiv:1511.02992
