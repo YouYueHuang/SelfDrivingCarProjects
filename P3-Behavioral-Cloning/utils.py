@@ -23,7 +23,7 @@ def crop(image):
 
 def resize(image):
     """
-    Resize the image to the input shape used by the network model
+    Resize the image to the input shape of the model
     """
     return cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
 
@@ -128,7 +128,7 @@ def augument(data_dir, center, left, right, steering_angle, range_x=100, range_y
     image, steering_angle = choose_image(data_dir, center, left, right, steering_angle)
     image, steering_angle = random_flip(image, steering_angle)
     image, steering_angle = random_translate(image, steering_angle, range_x, range_y)
-    image = random_shadow(image)
+    # image = random_shadow(image)
     image = random_brightness(image)
     return image, steering_angle
 
