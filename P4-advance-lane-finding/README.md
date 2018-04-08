@@ -9,24 +9,9 @@ This project requires users to have additional libraries installed in order to u
 
 ### How to use
 ---------------
-```shell
-# Clone the project to local computer
-git clone https://github.com/dat-ai/advance-lane-finding
-```
 
-```shell
-# Run pipe line
-cd advance-lane-finding
-```
-```shell
-# Add executable permission
-sudo chmod +x pipeline.py
-````
-
-```shell
-# Run program
-python pipeline.py
-```
+Camera Calibration
+state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
 ### Goal
 --------
@@ -90,3 +75,12 @@ If you want to extract more test images from the videos, you can simply use an i
 The video called `project_video.mp4` is the video your pipeline should work well on.  
 The `challenge_video.mp4` video is an extra (and optional) challenge for you if you want to test your pipeline under somewhat trickier conditions.  
 The `harder_challenge.mp4` video is another optional challenge and is brutal!
+
+
+Result:
+1. multiple lines
+2. edge of fence, shade, dirt, stains
+3 the line on the far side is unclear
+
+
+Conclusion:
