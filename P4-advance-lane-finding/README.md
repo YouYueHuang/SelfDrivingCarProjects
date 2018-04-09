@@ -1,7 +1,15 @@
 ## Advanced Lane Finding
 
-[![Video](./imgs/perspective_view_project_video.gif=100x20)](https://youtu.be/QO1ooiKTs1Y)
-[![Video](./imgs/bird_view_project_video.gif=100x20)](https://youtu.be/91TCNuWjo-g)
+<table>
+  <tr>
+    <td align="center">Detected Lane from Perspective View</td>
+    <td align="center">Detected Lane from Bird View</td>
+  </tr> 
+  <tr>
+    <td><a href="https://youtu.be/QO1ooiKTs1Y"><img src='./imgs/perspective_view_project_video.gif' style='width: 500px;'></a></td>
+    <td><a href="https://youtu.be/91TCNuWjo-g"><img src='./imgs/bird_view_project_video.gif' style='width: 500px;'></a></td>
+  </tr>
+</table>
 
 [//]: # (Image References)
 
@@ -35,9 +43,6 @@ When we drive on the road, the lines on the road act as the references. To devel
 In this project, the main goal is to build a pipeline to identify the lane boundaries in a video using cmputer vision techniques starting from camera caliaration to detect lane lines and calculate some characteristic of these lanes.
 
 The video called `project_video.mp4` is the video of the pipeline will work on in this project. 
-
-The following figure shows general pipeline of this project. 
-![alt text][image1]
 
 ### Goal
 ---------------
