@@ -1,7 +1,7 @@
 ## Advanced Lane Finding
 
-[![Video](./imgs/bird_view_project_video.gif)](https://youtu.be/91TCNuWjo-g)
-[![Video](./imgs/perspective_view_project_video.gif)](https://youtu.be/QO1ooiKTs1Y)
+[![Video](./imgs/perspective_view_project_video.gif=100x20)](https://youtu.be/QO1ooiKTs1Y)
+[![Video](./imgs/bird_view_project_video.gif=100x20)](https://youtu.be/91TCNuWjo-g)
 
 [//]: # (Image References)
 
@@ -114,15 +114,8 @@ The following figure shows the undistorted test images
 A common task in autonomous driving is to convert the vehicle’s camera view of the scene into a top-down "bird eye" view. We'll use OpenCV's `cv2.getPerspectiveTransform` and `cv2.warpPerspective` to do this task. First we need to define the region of interest for transformation. Next, we applied `cv2.getPerspectiveTransform` to calculate the transformation matrix. With the transformation matrix, we can easily get the image in bird-eye view The code are shown below:
 
 ```python
-src_region = np.float32([[(src_x1, src_y1)
-				 		, (src_x2, src_y2)
-                 		, (src_x3, src_x3)
-                 		, (src_x4, src_x4)]])
-
-dst_region = np.float32([[(dst_x1, dst_y1)
-				 		, (dst_x2, dst_y2)
-                 		, (dst_x3, dst_x3)
-                 		, (dst_x4, dst_x4)]])
+src_region = np.float32([[(src_x1, src_y1), (src_x2, src_y2), (src_x3, src_x3), (src_x4, src_x4)]])
+dst_region = np.float32([[(dst_x1, dst_y1), (dst_x2, dst_y2), (dst_x3, dst_x3), (dst_x4, dst_x4)]])
 
 Mtx = cv2.getPerspectiveTransform(src_region, dst_region)
 inv_Mtx = cv2.getPerspectiveTransform(dst_region, src_region)
@@ -274,7 +267,7 @@ The following figure shows the test images with lane curvature, deviation from r
 The following figure shows the test images with lane curvature, deviation from road center, detected region between lanes from perspective view
 ![alt text][image19]
 
-###Result
+### Result
 ----
 1. The pipeline works well on the `project.ma4` which of result could be found in [bird view](test_videos//test_output//bird_view_project_video.mp4) and [perspective view](test_videos//test_output//perspective_view_project_video.mp4), but performs terribly in `challenge_video.mp4` and `harder_challenge.mp4`. The reasons are mainly from the noises such as edge of the road shoulder, fence, shadow, sunshine, stains, road segment with different colors due to respilled asphalt. I applied combination of thresholding techniques and add up detected pixels. I give more weights to the pixels with high values because it was detected as a lane more times than other pixels, but 
 
@@ -282,7 +275,7 @@ The following figure shows the test images with lane curvature, deviation from r
 
 3. Some lanes are dash lines. Instead, the lines at the road shoulder are solid lines. The maginitude of dash line in histogram is less than that of solid line. I tried to give more weight to color filters, but the color filter cannot resist the noise of shadow due to the change of color. Another issue is the gap between dash lines could be quite large. In this case, the height of the window should be larger to prevent the low peak in histogram.
 
-###Conclusion
+### Conclusion
 ----
 1. The pipeline detects the lane line from scratch for each frame. It will work well in simple situation like `project.ma4`. However, the sliding window might lose the real lane due to the bad window size and terrible initial state such as sunshine which made the lane line disapear in the frame. Some caches could be imported to memorize the previous fitting lane to assist the guess of lane line.
 
@@ -293,7 +286,7 @@ The following figure shows the test images with lane curvature, deviation from r
 
 3. Even when everything is working, the detected lines could jump around from frame to frame a bit and it can be preferable to smooth over the last n frames of video to obtain a cleaner result.
 
-###Reference
+### Reference
 ----
 * [U.S. Road Regulation](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC)
 * [Curvature formula](https://www.intmath.com/applications-differentiation/8-radius-curvature.php)
