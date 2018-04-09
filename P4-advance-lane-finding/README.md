@@ -1,7 +1,7 @@
 ## Advanced Lane Finding
 
-[![Video](./imgs/bird_view_project_video.gif)](#)
-[![Video](./imgs/perspective_view_project_video.gif)](#)
+[![Video](./imgs/bird_view_project_video.gif)](https://youtu.be/91TCNuWjo-g)
+[![Video](./imgs/perspective_view_project_video.gif)](https://youtu.be/QO1ooiKTs1Y)
 
 [//]: # (Image References)
 
