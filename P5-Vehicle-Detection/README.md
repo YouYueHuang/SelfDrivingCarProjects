@@ -78,4 +78,12 @@ I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an 
 
 
 
-normalize your training data
+Result
+1. I tried to compared the Hog features of a car and a not car example based on mean absolute difference. Although the result shows the car image with less features has larger mean abosulte differece over all pixels, the accuracy of classfier did not show better performance
+2. I rescaled the window with manually, and it can detect the cars successfully.
+
+Conclusion:
+1. Different sets of features (HOG, spatial binning of color, histogram of color) could be tested separately based on different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb, LAB)
+2. I expect different window size, large van, hides the sky. It might fail to 
+3. Augment data with disappeard low half part
+4. Dectec all the lane line and perspective transform and define the window because in real case, we still need to detect lane line. The lane line can be used to estimate the size and aspect ratio of the window.
