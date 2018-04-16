@@ -16,7 +16,7 @@
 [image13]: ./img/image0004.png
 
 
-
+https://youtu.be/hGViPj14bw8
 
 ### Overview
 ---
@@ -39,9 +39,11 @@ The structure and useage of the files in this repository are as follows:
 
 `Main_pipeline.ipynb`: This part contains the code for feature extraction, preprocessing, classifier training and sliding window.
 
-`test_images`: It contains images for testing feature extraction, sliding window drawing and .
+`processed_project_video.mp4`: The final result of vehicle detection pipeline.
 
-`videos`: It contains test videos `project_video.mp4` and the precessed result. 
+`test_images`: It contains images for testing feature extraction, sliding window drawing and.
+
+`videos`: It contains test videos `project_video.mp4` and the search region of sliding window. 
 
 `img`: It stores the images of README.md.
 
@@ -61,6 +63,7 @@ Number of non-car images:  8968
 
 The following figures shows the examples of car and not-car images 
 ![alt text][image1]
+
 ![alt text][image2]
 
 ### Pipeline
@@ -154,6 +157,7 @@ hist_features = np.concatenate((channel1_hist[0], channel2_hist[0], channel3_his
 
 The following figures shows the example of a car image (64x64) and its binned color features (16x16)
 ![alt text][image13]
+
 ![alt text][image4]
 
 The following figures shows the line graph of the RGB distribution of a car image
@@ -170,7 +174,7 @@ The following figures shows the view of a video frame in RGB color space
 
 ### Classifier training
 ---
-To classify the image, I standerdized and shuffled the datasets. Features should be scaled to zero mean and unit variance before training the classifier with `sklearn.preprocessing.StandardScaler()`. Next, I splitted the data into training set(80%) and test set(20%). In the end, I trained a Linear SVM classifer with `scikit learn`. The C parameters of SVM is 1. The parameters of HOG feature extraction are 15 for `orientations`, 8 for `pixels per cell`, 2 for `cells per block`. Number of bin is 32 for the features of histogram of color. Binning size is (32,32). Total feature number is 11988. The test accuracy of SVC model is 0.9918
+To classify the image, I standerdized and shuffled the datasets. Features should be scaled to zero mean and unit variance before training the classifier with `sklearn.preprocessing.StandardScaler()`. Next, I splitted the data into training set(80%) and test set(20%). In the end, I trained a Linear SVM classifer with `scikit learn`. The C parameters of SVM is 1. The parameters of HOG feature extraction are 15 for `orientations`, 8 for `pixels per cell`, 2 for `cells per block`. Number of bin is 32 for the features of histogram of color. Binning size is (32,32). Total feature number is 11988. The test accuracy of SVC model is 0.9918. 
 
 ```python
 X_scaler = StandardScaler().fit(X)
@@ -189,6 +193,60 @@ X_train, X_test, y_train, y_test = train_test_split(
 svc = LinearSVC()
 svc.fit(X_train, y_train)
 
+### Sliding Window Search
+---
+To search vehicles in a frame, sliding window was appied to iterate over predefined interest of region (lower half part of a frame) that could contain cars with boxes of estimated vehicle size, and the classifier will check if a box contains vehicles. As vehicles may be of different sizes due to different perspectives and distortion, boxes need to bed resized for nearby and distant vehicles. I use various sized of sliding window with different scale while iterating with overlapping ratio of 75% in horizontal and vertical directions. I also generated windows with different y starting points and y stop points to reduce search space. In the end, there are false positive patches(not vehicles) and true positive patches(vehicles) for each frame. For false positive detection, thresholding was applied to remove not vehicle part. To locate the vehicles and confirm the number, heatmap and `scipy.ndimage.measurements.label` were used validate the final result in a visual way. The main idea and parameters are extracted as follows:
+
+```python
+from scipy.ndimage.measurements import label
+
+def add_heat(heatmap, bbox_list):
+    # Iterate through list of bboxes
+    for box in bbox_list:
+        # Add += 1 for all pixels inside each bbox
+        # Assuming each "box" takes the form ((x1, y1), (x2, y2))
+        heatmap[box[0][1]:box[1][1], box[0][0]:box[1][0]] += 1
+
+    # Return updated heatmap
+    return heatmap
+    
+def apply_threshold(heatmap, threshold):
+    # Zero out pixels below the threshold
+    heatmap[heatmap <= threshold] = 0
+    # Return thresholded map
+    return heatmap
+
+def draw_labeled_bboxes(img, labels):
+    # Iterate through all detected cars
+    for car_number in range(1, labels[1]+1):
+        # Find pixels with each car_number label value
+        nonzero = (labels[0] == car_number).nonzero()
+        # Identify x and y values of those pixels
+        nonzeroy = np.array(nonzero[0])
+        nonzerox = np.array(nonzero[1])
+        # Define a bounding box based on min/max x and y
+        bbox = ((np.min(nonzerox), np.min(nonzeroy)), (np.max(nonzerox), np.max(nonzeroy)))
+        # Draw the box on the image
+        cv2.rectangle(img, bbox[0], bbox[1], (255,61,0), 4)
+    # Return the image
+    return img
+
+ystart = [ 400,  400,  410,  420, 430,   430,  440,  400,  400, 500, 400, 400, 440, 400, 410]
+ystop = [  500,  500,  500,  556, 556,   556,  556,  556,  556, 656, 556, 556, 500, 500, 500]
+scale = [  1.0,  1.3,  1.4,  1.6, 1.8,   2.0,  1.9 , 1.3 , 2.2, 3.0, 2.1, 2.2, 1.0, 1.2, 1.2]
+threshold = 1 				# threshold for removing false positive prediction 
+color_space = 'YUV' 		# Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+orient = 15  				# HOG orientations
+pix_per_cell = 8 			# HOG pixels per cell
+cell_per_block = 2 			# HOG cells per block
+hog_channel = "ALL" 		# Can be 0, 1, 2, or "ALL"
+spatial_size = (32, 32) 	# Spatial binning dimensions
+hist_bins = 32    			# Number of histogram bins
+
+out_img, bboxes = find_cars(image, y_start, y_stop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size)
+```
+
+The figures below are the examples of the result of sliding windows, thresholding, heatmap and vehicle labelling.
 
 The following figures shows the boxes with positive predictions from test images
 ![alt text][image9]
@@ -200,15 +258,34 @@ The following figures shows an example with final detected boxes after threshold
 ![alt text][image11]
 
 
-Result
-1. I tried to compared the Hog features of a car and a not car example based on mean absolute difference. Although the result shows the car image with less features has larger mean abosulte differece over all pixels, the accuracy of classfier did not show better performance
-2. I rescaled the window with manually, and it can detect the cars successfully.
-3. Relative speed of the car 
-4. The size of window is hard-coded. Start from large window, if the large object is detected, the camera cannot see the small vehicle behind the big one.  
-5. Collect all the boxes of True positive prediction and calculate the best combination of search bound of each scale.
+### Result
+---
+1. I tried to compared the Hog features of a car and a not car example based on mean absolute difference. Although the result shows the car image with less features has larger mean abosulte differece over all pixels, the accuracy of classfier did not show better performance. It is hard to tell if a set of features is benefical to the performance of a classifer. The features still need to be tested collectively, but it will cost considerable computational resources. 
 
-Conclusion:
+2. I rescaled the window sizes manually, and the results of the detection are acceptible. Sometimes the cars in another side could be detected even though the lower half part of those vehicles are hidden by the road fence. Due to the manual adjustment of parameters, the pipeline will be useless if there is a accidental change of terrain.
+
+3. Sometimes the detected vehicles might disappear suddenly in some frames. I tried to use queue to memorize the position of the vehicle in the previous frames, but it sometimes causes the false positive detection to the vehicles in the oppisite direction. That indicates that this approach is limited to the relative speed of the vehicles and the persistence time of a detected vehicle.
+
+4. The size of window is square-shaped and hard-coded, but the vehicle such as van or motorcycle might be rectangle. In addition, the vehicle in left and right side might change its shape from different angle. 
+
+### Conclusion
+---
 1. Different sets of features (HOG, spatial binning of color, histogram of color) could be tested separately based on different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb, LAB)
 2. I expect different window size, large van, hides the sky. It might fail to 
 3. Augment data with disappeard low half part, flipping the image
 4. Dectec all the lane line and perspective transform and define the window because in real case, we still need to detect lane line. The lane line can be used to estimate the size and aspect ratio of the window.
+5. Some parameters such as `cell per block` the searching time will be squared
+
+5. Incremental learning with partial_fit
+sklearn.linear_model.SGDClassifier  linear SVM with loss function of `hinge`
+
+Start from large window, if the large object is detected, the camera cannot see the small vehicle behind the big one.  
+
+5. Collect all the boxes of True positive prediction and calculate the best combination of search bound of each scale.
+
+How did you optimize the performance of your classifier?
+lane line detection to confirm the terrain
+
+### Reference
+---
+1. [SVM with inncremental learning in Scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier)
