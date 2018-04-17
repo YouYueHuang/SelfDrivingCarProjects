@@ -15,8 +15,17 @@
 [image12]: ./img/HOG_hyperparameter_test.png
 [image13]: ./img/image0004.png
 
+<table>
+  <tr>
+    <td align="center">First half part of project video</td>
+    <td align="center">Second half part of project video</td>
+  </tr> 
+  <tr>
+    <td><a href="https://youtu.be/hGViPj14bw8"><img src='./img/01.gif' style='width: 500px;'></a></td>
+    <td><a href="https://youtu.be/hGViPj14bw8"><img src='./img/02.gif' style='width: 500px;'></a></td>
+  </tr>
+</table>
 
-https://youtu.be/hGViPj14bw8
 
 ### Overview
 ---
@@ -266,25 +275,17 @@ The following figures shows an example with final detected boxes after threshold
 
 3. Sometimes the detected vehicles might disappear suddenly in some frames. I tried to use queue to memorize the position of the vehicle in the previous frames, but it sometimes causes the false positive detection to the vehicles in the oppisite direction. That indicates that this approach is limited to the relative speed of the vehicles and the persistence time of a detected vehicle.
 
-4. The size of window is square-shaped and hard-coded, but the vehicle such as van or motorcycle might be rectangle. In addition, the vehicle in left and right side might change its shape from different angle. 
+4. The size of window is square-shaped and hard-coded, but the vehicle such as van or motorcycle might be rectangle. In addition, the vehicle in left and right side might change its shape from different angle. Some parameters such as `cell per block` will increase the search time in square order, so I choose to adjust the search range with different window scale.
 
 ### Conclusion
 ---
-1. Different sets of features (HOG, spatial binning of color, histogram of color) could be tested separately based on different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb, LAB)
-2. I expect different window size, large van, hides the sky. It might fail to 
-3. Augment data with disappeard low half part, flipping the image
-4. Dectec all the lane line and perspective transform and define the window because in real case, we still need to detect lane line. The lane line can be used to estimate the size and aspect ratio of the window.
-5. Some parameters such as `cell per block` the searching time will be squared
+1. Although features did not show good capability for prediction in parameter test of HOG feature extraction, different sets of features still can be experimented for classifer training. For example, histogram of color with different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb, LAB) or combination of different channels might give unique presentations for vehicles.
 
-5. Incremental learning with partial_fit
-sklearn.linear_model.SGDClassifier  linear SVM with loss function of `hinge`
+2. The reduction of sliding window search space is the priority to give a real-time detection. When driving on the road, self-driving car need to detect all the lane lines anyway. With knowing the road condition by lanes, we can apply perspective transform to estimate the aspect ratio and size of window for each region of interest. Also, the lane orientation can indicate the apporximate range of sky which we are not interested in as long as the vehicle is not too large to hide the sky. Another way is to start searching from large window. If the large object is detected, the camera cannot see the small vehicle behind the big one. Therefore, some search with small window size can be skipped.  
 
-Start from large window, if the large object is detected, the camera cannot see the small vehicle behind the big one.  
+3. The reliability of classifer is important to decrease the occurence of false positive detection because high threshold migh harm the final result of true positive detection. To generalize the classifier and reduce some potential issues such as overfitting, a less costly way is applying the technique of data augmentation. In this project, we can with apply flipping, slight rotation (in case of a turn of terrain change) and add some noises to the low half part of a vehicle (in case of being hidden by obstacles partialy.)
 
-5. Collect all the boxes of True positive prediction and calculate the best combination of search bound of each scale.
-
-How did you optimize the performance of your classifier?
-lane line detection to confirm the terrain
+4. There are some false positive results with horizontal lines. To improve the performance of the classifier, we could adopt incremental learning with `partial_fit` in `sklearn.linear_model.SGDClassifier` and the linear SVM could be used with loss function of `hinge`. When removing the false positive patches with thresholding techniques, we can recycle and feed them into the model to help classifer recognize them next time.
 
 ### Reference
 ---
