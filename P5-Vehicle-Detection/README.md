@@ -2,9 +2,9 @@
 
 [//]: # (Image References)
 [image1]: ./img/cars.png
-[image2]: ./img/not_cars.jpg
-[image3]: ./img/HOG_hyperparameter_visualization.jpg
-[image4]: ./img/bin_spatial.jpg
+[image2]: ./img/not_cars.png
+[image3]: ./img/HOG_hyperparameter_visualization.png
+[image4]: ./img/bin_spatial.png
 [image5]: ./img/color_of_histogram.png
 [image6]: ./img/histogram_of_color_space.png.png
 [image7]: ./img/img_different_color_space.png
