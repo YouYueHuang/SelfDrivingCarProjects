@@ -44,7 +44,7 @@ The goals / steps of this project are the following:
 
 ### File structure
 ---
-The structure and useage of the files in this repository are as follows:
+The structure and usage of the files in this repository are as follows:
 
 `Main_pipeline.ipynb`: This part contains the code for feature extraction, preprocessing, classifier training and sliding window.
 
@@ -290,3 +290,4 @@ The following figures shows an example with final detected boxes after threshold
 ### Reference
 ---
 1. [SVM with inncremental learning in Scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier)
+2. [Real time object detection with YOLO](https://pjreddie.com/darknet/yolo/)
