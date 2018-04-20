@@ -21,12 +21,6 @@
 [image18]: ./imgs/not_cars.png
 [image19]: ./imgs/track2_H_HSV.png
 
-
-![alt text][image1]
-![alt text][image2]
-![alt text][image3]
-![alt text][image4]
-
 <table>
   <tr>
     <td align="center">Autonomous driving around the lakeside track in the simulator</td>
@@ -121,20 +115,31 @@ Below are example images from the left, center, and right cameras
 The following figure is an example of the flipping images
 ![alt text][image2]
 
-### Model Architecture and Training Strategy
+### Preprocessing
+#### Color Space
 ---
-The `model.py` file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-1. Preprocessing
-Color space: 
-In Nidia model: YUV
-The following color space could recognize the boudary of road and not-road part.
+Nidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part
 (1) Y in YUV
 (2) L in LAB
 (3) LS in HLS
 (4) L in LUV
 (5) SV in HSV
 (6) RGB
+
+#### Image Cropping
+---
+
+
+#### Image Cropping
+---
+
+
+### Model Architecture and Training Strategy
+---
+The `model.py` file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+
+
 
 The model predicts only steering angle, not including speed The driving 
 The speed of car in autonomous mode could be set in `drive.py` response time
@@ -154,9 +159,6 @@ I finally randomly shuffled the data set and put Y% of the data into a validatio
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving: 
-![alt text][image2]
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... 
 
@@ -183,13 +185,55 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 
 
-
+Nvidia model
 
 ```python
-# Clip the image
+"""
+NVIDIA model
+"""
+
+# Crop the image
 model.add(Cropping2D(cropping=((2, 2), (4, 4)),
                      input_shape=(28, 28, 3)))
-# now model.output_shape == (None, 24, 20, 3)
+
+model = Sequential()
+# rescale
+model.add(Lambda(lambda x: x/127.5-1.0, input_shape=INPUT_SHAPE))
+model.add(Conv2D(24, 5, 5, activation='elu', subsample=(2, 2)))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Conv2D(36, 5, 5, activation='elu', subsample=(2, 2))) # kernel_regularizer=regularizers.l2(weight_decay)
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Conv2D(48, 5, 5, activation='elu', subsample=(2, 2)))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Conv2D(64, 3, 3, activation='elu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Conv2D(64, 3, 3, activation='elu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+
+model.add(Flatten())
+model.add(Dense(100, activation='elu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Dense(50, activation='elu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Dense(10, activation='elu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(Dense(1))
 ```
 
 I normalized the data with 255 and subtracting 0.5 to shift the mean from 0.5 to 0.
@@ -206,7 +250,6 @@ I normalized the data with 255 and subtracting 0.5 to shift the mean from 0.5 to
 
 2. The model need to weave back to the road center if it is away from the road. Without augmentation, the car wobbles noticeably but stays on the road.
 
-4. Horizonal Flipping
 
 ### Conclusion
 ---
@@ -215,9 +258,12 @@ I normalized the data with 255 and subtracting 0.5 to shift the mean from 0.5 to
 
 2. The data can be collected by driving it in both counter-clockwise and clockwise direction, or the model will perform not well in either direction.
 
+3. The way of collecting datasets would influence the behavior of the model. Although the model doesn't need to predict other measurements (brake, speed and throttle), the speed will influence the response time to steer the car
+
+
 ### Issue
 ---
-* system error unknown opcode python when running Keras. So I installed a virtual environment of python 3.5.2. https://github.com/keras-team/keras/issues/7297
+* system error [unknown opcode python](https://github.com/keras-team/keras/issues/7297) when running Keras. So I installed a virtual environment of python 3.5.2. 
 
 ### Reference
 1. [Nvidia self driving car model](https://devblogs.nvidia.com/deep-learning-self-driving-cars/) 
