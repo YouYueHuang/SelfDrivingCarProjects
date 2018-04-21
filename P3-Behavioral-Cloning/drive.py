@@ -56,12 +56,18 @@ def telemetry(sid, data):
             # lower the throttle as the speed increases
             # if the speed is above the current speed limit, we are on a downhill.
             # make sure we slow down first and then go back to the original max speed.
-            global speed_limit
+            global speed_limitD
             if speed > speed_limit:
                 speed_limit = MIN_SPEED  # slow down
             else:
                 speed_limit = MAX_SPEED
-            throttle = 1.0 - steering_angle**2 - (speed/speed_limit)**2
+            # throttle = 1.0 - steering_angle**2 - (speed/speed_limit)**2
+            if abs(steering_angle) < 0.03:
+                throttle = 0.25
+            elif abs(steering_angle) < 0.4:
+                throttle = 0.15
+            else:
+                throttle = -0.5
 
             print('{} {} {}'.format(steering_angle, throttle, speed))
             send_control(steering_angle, throttle)
