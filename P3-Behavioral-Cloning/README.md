@@ -129,10 +129,20 @@ Nidia model used YUV color space, and there are also other color space which cou
 
 #### Image Cropping
 ---
+The sky part and the front of the car couldn't help predict the steering angle, so I cropped the image by slicing the tensors. We first supply the startY and endY coordinates, followed by the startX and endX coordinates to the slice. That’s it. We’ve cropped the image!
+
+```python
+image[60:-25, :, :]
+```
 
 
-#### Image Cropping
+#### Image Resizing
 ---
+
+```python
+cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
+```
+
 
 
 ### Model Architecture and Training Strategy
@@ -183,6 +193,32 @@ The final step was to run the simulator to see how well the car was driving arou
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 
+    """
+    Generate training image give image paths and associated steering angles
+    """
+    images = np.empty([batch_size, IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS])
+    steers = np.empty(batch_size)
+    while True:
+        i = 0
+        for index in np.random.permutation(image_paths.shape[0]):
+            center, left, right = image_paths[index]
+            steering_angle = steering_angles[index]
+            # with augmentation
+            if is_training: 
+                image, steering_angle = augument(data_dir, center, left, right, steering_angle)
+                
+            # without augmentation
+            else:
+                image = load_image(data_dir, center) 
+            # add the image and steering angle to the batch
+            images[i] = preprocess(image)
+            steers[i] = steering_angle
+            i += 1
+            if i == batch_size:
+                break
+        yield images, steers
+
+
 
 
 Nvidia model
@@ -218,7 +254,6 @@ model.add(BatchNormalization())
 model.add(Conv2D(64, 3, 3, activation='elu'))
 model.add(Dropout(0.2))
 model.add(BatchNormalization())
-
 
 model.add(Flatten())
 model.add(Dense(100, activation='elu'))
@@ -256,9 +291,14 @@ I normalized the data with 255 and subtracting 0.5 to shift the mean from 0.5 to
 
 1. If your model has low mean squared error on the training and validation sets but is driving off the track, this could be because of the data collection process. 
 
-2. The data can be collected by driving it in both counter-clockwise and clockwise direction, or the model will perform not well in either direction.
+2. The histogram of The data can be collected by driving it in both counter-clockwise and clockwise direction, or the model will perform not well in either direction.
 
-3. The way of collecting datasets would influence the behavior of the model. Although the model doesn't need to predict other measurements (brake, speed and throttle), the speed will influence the response time to steer the car
+
+
+
+
+
+3. The way of collecting datasets would influence the behavior of the model. Clearly classify each recovering action (avoiding hitting the wall, steering back to the road center, etc.) can help detect deficiency of the model and guide the data collecting strtegy. Although the model doesn't need to predict other measurements (brake, speed and throttle), the speed will influence the response time to steer the car.
 
 
 ### Issue
