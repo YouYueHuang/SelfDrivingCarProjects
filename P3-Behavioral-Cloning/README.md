@@ -119,7 +119,7 @@ The following figure is an example of the flipping images
 #### Color Space
 ---
 
-Nidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part
+Nvidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part
 (1) Y in YUV
 (2) L in LAB
 (3) LS in HLS
@@ -129,15 +129,15 @@ Nidia model used YUV color space, and there are also other color space which cou
 
 #### Image Cropping
 ---
-The sky part and the front of the car couldn't help predict the steering angle, so I cropped the image by slicing the tensors. We first supply the startY and endY coordinates, followed by the startX and endX coordinates to the slice. That’s it. We’ve cropped the image!
+The sky part and the front of the car couldn't help predict the steering angle, so I cropped the image by slicing the tensors. I supplied the start and the end of y coordinates to the slice. The code is as follows:
 
 ```python
-image[60:-25, :, :]
+image[start_Y:end_Y, :, :]
 ```
-
 
 #### Image Resizing
 ---
+I resized the images and made it smaller which can reduce the parameter number of the model. One thing should be noticed is to keep aspect ratio so the image does not look skewed or distorted.
 
 ```python
 cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
@@ -147,6 +147,12 @@ cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
 
 ### Model Architecture and Training Strategy
 ---
+The size of image is as follows after each processing
+(1) The input size: (160, 320, 3)
+(2) After cropping: (75, 320, 3)
+(3) After resizing: (66, 200, 3)
+
+
 The `model.py` file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 
@@ -284,6 +290,15 @@ I normalized the data with 255 and subtracting 0.5 to shift the mean from 0.5 to
 1. The data can be collected by driving it in both counter-clockwise and clockwise direction, or the model will perform not well in either direction.
 
 2. The model need to weave back to the road center if it is away from the road. Without augmentation, the car wobbles noticeably but stays on the road.
+
+3. Nvidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part
+(1) Y in YUV
+(2) L in LAB
+(3) LS in HLS
+(4) L in LUV
+(5) SV in HSV
+(6) RGB
+
 
 
 ### Conclusion
