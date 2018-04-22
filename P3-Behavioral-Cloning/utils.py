@@ -3,10 +3,14 @@ import numpy as np
 import matplotlib.image as mpimg
 
 
-IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 45, 192, 3 
+IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 63, 280, 3          #63, 288, 3 
 INPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS)
-CROP_LOWER_Y = 60
+CROP_LOWER_Y = 63
 CROP_HIGHER_Y = -25
+
+#     input size: (160, 320, 3)
+#     After crop: (72, 320, 3)
+#     After reszie: (45, 192, 3) or (60, 256)
 
 def load_image(data_dir, image_file):
     """
@@ -29,21 +33,32 @@ def resize(image):
     return cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
 
 
-def rgb2yuv(image):
+def convert_color(img, conv='YUV'):
     """
     Convert the image from RGB to YUV (This is what the NVIDIA model does)
     """
-    return cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+    if conv == 'YCrCb':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+    if conv == 'HSV':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+    if conv == 'LUV':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2LUV)
+    if conv == 'HLS':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+    if conv == 'LAB':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
+    if conv == 'YUV':
+        return cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
 
 
-# def preprocess(image):
-#     """
-#     Combine all preprocess functions into one
-#     """
-#     image = crop(image)
-#     image = resize(image)
-#     image = rgb2yuv(image)
-#     return image
+def preprocess(image):
+    """
+    Combine all preprocess functions into one
+    """
+    image = crop(image)
+    image = resize(image)
+    image = convert_color(image,'YUV')
+    return image
 
 
 def choose_image(data_dir, center, left, right, steering_angle):

@@ -273,11 +273,13 @@ The following figure shows accuracy and loss on two datasets(training, test) aft
 
 Refrences
 ---
-
 1. [Example of Tensorboard](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/tensorboard_basic.py)
 2. [Example of saving and restoring model in Tensorflow](https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/4_Utils/save_restore_model.py)
 3. [The code of Data augmentation](https://github.com/aleju/imgaug) from aleje.
 4. [Understanding data augmentation for classification:when to warp?](https://arxiv.org/pdf/1609.08764.pdf)
+5. [improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification](https://medium.com/@vivek.yadav/improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification-using-6355346da2dc)
+6. [How large should the batch size be for stochastic gradient descent?](https://stats.stackexchange.com/questions/140811/how-large-should-the-batch-size-be-for-stochastic-gradient-descent)
+7. [GoogleNet](https://github.com/tflearn/tflearn/blob/master/examples/images/googlenet.py)
 
 Appendix
 ---
