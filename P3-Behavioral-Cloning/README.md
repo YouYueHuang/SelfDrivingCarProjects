@@ -29,14 +29,10 @@
 <table>
   <tr>
     <td align="center">Autonomous driving in the lakeside track in the simulator</td>
-  </tr> 
-  <tr>
     <td align="center">The view of Autonomous driving in the lakeside track</td>
   </tr> 
   <tr>
     <td><a href="https://youtu.be/PDS6w3e9rOE"><img src='./imgs/record_03.gif' style='width: 500px;'></a></td>
-  </tr>
-  <tr>
     <td><a href="https://youtu.be/q4AyGOw0ZqQ"><img src='./imgs/video_part1.gif' style='width: 500px;'></a></td>
   </tr>
 </table>
@@ -71,13 +67,13 @@ The structure and usage of the files in this repository are as follows:
 * `data`: this directory contains training, validation images and driving logs. In `driving_log.csv`, each row in this sheet correlates the `img` images with the steering angle, throttle, brake, and speed of the car. The model.h5 was trained with these measuresments to steer the angle.
 * `model`: this directory contains the models of 20 epochs in this project.
 
-### Usage
+### How to use
 #### Drive the car
 ---
 To run the trained model in the Udacity simulator, first launch the simulator and select "AUTONOMOUS MODE". Then run
 the model (model.h5) be used with drive.py using this command:
 
-```sh
+```shell
 python drive.py model.h5
 ```
 
@@ -86,7 +82,7 @@ The above command will load the trained model and use the model to make predicti
 #### Save a video of the autonomous agent
 ---
 
-```sh
+```shell
 python drive.py model.h5 video
 ```
 
@@ -94,7 +90,7 @@ The fourth argument, `video`, is the directory in which to save the images seen 
 
 The image file name is a timestamp of when the image was seen. This information is used by `video.py` to create a chronological video of the agent driving. The training images are loaded in **BGR** colorspace using cv2 while `drive.py` load images in **RGB** to predict the steering angles.
 
-```sh
+```shell
 python video.py video --fps 48
 ```
 
@@ -105,16 +101,10 @@ Creates a video based on images found in the `video` directory. The name of the 
 
 The training data was collected using Udacity's simulator in training mode on the lakeside track
 
-* The data can be collected by driving it in both counter-clockwise and clockwise direction.
+* The data was collected by driving it in both counter-clockwise and clockwise direction.
 * For gathering recovery data, I also drove along the outer and inner lane line.
-* I tried to keep the car in the center of the road as much as possible
-* I then recorded the car recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn back to the center of the roead
-
-* I drove several laps
-	(1) two or three laps of center lane driving
-	(2) one lap of recovery driving from the sides
-	(3) one lap focusing on driving smoothly around curves
-
+* I tried to keep the car in the center of the road as much as possible.
+* I recorded the car recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn back to the center of the roead.
 * After the collection process, I had 12840 number of frames from center camera. I then randomly shuffled the data set and put 20% of the data into a validation set. 
 
 Below are example images from the left, center, right cameras and a flipping image
@@ -123,15 +113,21 @@ Below are example images from the left, center, right cameras and a flipping ima
 ### Preprocessing
 #### Color Space
 ---
-Nvidia model used YUV color space, and there are also other color spaces which could recognize the boudary of road and not-road part
+I followed the Nvidia model with YUV color space, and there are also other color spaces which could recognize the boudary of road and not-road part.
 
-The following figure shows the view of 10 frames in (1) YUV color space, (2) Y channel, (3) U channel and (4) V channel respectively
+The following figure shows the view of 10 frames in YUV color space
 
 ![alt text][image10]
 
+Y channel
+
 ![alt text][image11]
 
+U channel
+
 ![alt text][image12]
+
+V channel
 
 ![alt text][image13]
 
@@ -143,7 +139,7 @@ The sky part and the front of the car couldn't help predict the steering angle, 
 image[start_Y:end_Y, :, :]
 ```
 
-The following figure shows the frames after cropping
+The following figure shows 10 example frames after cropping
 ![alt text][image3]
 
 #### Image Resizing
@@ -154,7 +150,7 @@ I resized the images and made it smaller which can reduce the parameter number o
 cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
 ```
 
-The following figure shows the frames after resizing
+The following figure shows 10 example frames after resizing
 
 ![alt text][image4]
 
@@ -176,23 +172,21 @@ The following figure is the time series plot of steering angle  of (from left to
 ### Model Architecture and Training Strategy
 ---
 * The size of image is as follows in each preprocessing stage
-	(1) The input size: (160, 320, 3)
-	(2) After cropping: (72, 320, 3)
-	(3) After resizing: (63, 280, 3)
+  1. The input size: (160, 320, 3)
+  2. After cropping: (72, 320, 3)
+  3. After resizing: (63, 280, 3)
 
-* Modified Nvidia neural network model
-
-* The following is the parameter of the model
-	(1) epoch: 20
-	(2) samples per epoch: 19200
-	(3) batch size : 64
-	(4) learning_rate : 1.0e-4 
+* I built the model based on the Nvidia neural network one for self-driving car. The following is the parameters of the model
+  1. epoch: 20
+  2. samples per epoch: 19200
+  3. batch size : 64
+  4. learning_rate : 1.0e-4 
 
 * Batch size determines how many examples the model look at before making a weight update. The lower it is, the noisier the training signal is going to be, the higher it is, the longer it will take to compute the gradient for each step.
 
 * The batch of training set was generated with randomly horizontal flipping
 
-* I used this training data for training the model. The validation set helped determine if the model was over or under fitting during 20 epochs. 
+* I used this training data for training the model. The validation set helped determine if the model was over or under fitting for 20 epochs. 
 
 * I normalized the data with 255 and subtracting 0.5 to shift the range to -0.5~0.5
 
@@ -202,7 +196,8 @@ The following figure is the time series plot of steering angle  of (from left to
 
 * Due to the limited computation resource, I created the batch on the fly with python `generator`.
 
-Here is a visualization of the architecture
+**visualization of the architecture**
+
 ![alt text][image18]
 
 The following is the code of neural network model
