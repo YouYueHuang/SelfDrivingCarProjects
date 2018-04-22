@@ -34,10 +34,10 @@
     <td align="center">The view of Autonomous driving in the lakeside track</td>
   </tr> 
   <tr>
-    <td><a href="https://youtu.be/PDS6w3e9rOE"><img src='./img/01.gif' style='width: 500px;'></a></td>
+    <td><a href="https://youtu.be/PDS6w3e9rOE"><img src='./imgs/record_03.gif' style='width: 500px;'></a></td>
   </tr>
   <tr>
-    <td><a href="https://youtu.be/q4AyGOw0ZqQ"><img src='./img/01.gif' style='width: 500px;'></a></td>
+    <td><a href="https://youtu.be/q4AyGOw0ZqQ"><img src='./imgs/video_part1.gif' style='width: 500px;'></a></td>
   </tr>
 </table>
 
@@ -68,7 +68,8 @@ The structure and usage of the files in this repository are as follows:
 * `model.h5`: a trained Keras model
 * `video.mp4`: a video recording of the vehicle driving autonomously around the lakeside track.
 * `img`: this folder contains all the frames of the manual driving.
-* `driving_log.csv`: each row in this sheet correlates the `img` images with the steering angle, throttle, brake, and speed of the car. The model.h5 was trained with these measuresments to steer the angle.
+* `data`: this directory contains training, validation images and driving logs. In `driving_log.csv`, each row in this sheet correlates the `img` images with the steering angle, throttle, brake, and speed of the car. The model.h5 was trained with these measuresments to steer the angle.
+* `model`: this directory contains the models of 20 epochs in this project.
 
 ### Usage
 #### Drive the car
@@ -278,7 +279,7 @@ The following figure shows the view of 10 frames with noise of random blotting
 
 3. Although the model doesn't need to predict other measurements (brake, speed and throttle), the speed will influence the response time to steer the car. It is critical to keep the driving speed of traing period and autonomous driving period as close as possible. 
 
-4. Nvidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part listed in the following part. This didn't try to other color spaces, but the model could be improved with different combination of channels from color spaces.
+4. Nvidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part listed in the following part. This didn't try to other color spaces, but the model could be improved with different combination of channels from color spaces. For example, the frames from A channel in LAB color space are not recognizable, and those from S channel in HLS color are clear for both track.
 
 	(1) Y in YUV
 	(2) L in LAB
@@ -298,10 +299,6 @@ The following figure shows the view of 10 frames of S channel in HLS color space
 ![alt text][image14]
 
 ![alt text][image15]
-
-
-The following figure shows the view of 10 frames of S channel in HLS color space
-![alt text][image1]
 
 ### Issue
 ---
