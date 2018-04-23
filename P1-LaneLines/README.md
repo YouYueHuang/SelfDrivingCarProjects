@@ -7,16 +7,16 @@ To develop a self-driving car, one of the critical issues is to tell the car whe
 Getting Started
 ---
 * [Main_pipeline.ipynb](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/Main_pipeline.ipynb) 
-This notebook contains the code to detect lane line and visualizes the processing steps. It shows an example of using a model pre-trained on MS COCO to segment objects in your own images.
+This notebook contains the code to detect lane line and visualizes the processing steps.
 
 * [examples](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/examples) 
-It shows the results of each step in image processing pipeline.
+This directory stores the results of each step in image processing pipeline.
 
 * [test_images](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images), [test_images_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_images_output)
-These files contain the test images and the detected lane lines.
+This directory contains the test images and the detected lane lines.
 
 * [test_videos](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos), [test_videos_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos_output) 
-These files contain the test videos and the detected lane lines.
+This directory contains the test videos and the detected lane lines.
 
 Pipeline
 ---
@@ -30,24 +30,23 @@ The following steps are listed based on the image processing order. The images a
 
 <img src="./examples/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
 
-* Visualize color distribution
+
+<center><font size="6">Scatter plot of pixel distribution in RGB color space</font></center>
 
 <div>
 	<p>GB distribution</p>
-	<img src="./examples/GB_distribution.png" alt="Overview" width="33%" height="300px">
+	<img src="./examples/GB_distribution.png" alt="Overview" width="30%">
 	<p>RB distribution</p>
-	<img src="./examples/RB_distribution.png" alt="Overview" width="33%" height="300px">
+	<img src="./examples/RB_distribution.png" alt="Overview" width="30%">
 	<p>RG distribution</p>
-	<img src="./examples/RG_distribution.png" alt="Overview" width="33%" height="300px">
+	<img src="./examples/RG_distribution.png" alt="Overview" width="30%">
 </div>
 
 * Color detection
 
-  - photo  
-
 <img src="./examples/lane_line.jpg" alt="Overview" width="60%" height="300px">
 
-  - [video](https://www.youtube.com/edit?video_id=8WpxG8XdfZY&video_referrer=watch)
+  - [video](https://youtu.be/8WpxG8XdfZY)
 
 * Gray scale transformation
 
@@ -114,3 +113,7 @@ Possible improvements
 In this algorithm, Canny edge detection and Guassian blurring are the preparation before Hough line transformation. After series of filtering, local contrast enhancement and sharpening could be applied to replace these processings. Next, The points can be fitted into a line with linear regression to get the lane lines.
 
 * As for the noise from objects on the road ahead, the region of interest could be changed from triangle to trapezoid. The noise could be reduced in our examples, but a good region of interest might still vary due to the angle of camara, the condition of road, etc. 
+
+### Reference
+---
+[Robust and real time detection of curvy lanes (curves) having desired slopes for driving assistance and autonomous vehicles](http://airccj.org/CSCP/vol5/csit53211.pdf)
