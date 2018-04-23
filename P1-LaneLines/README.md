@@ -22,9 +22,10 @@ This directory contains the test videos and the detected lane lines.
 ---
 The following steps are listed based on the image processing order. The images are the results of that step. 
 
-<p style="text-align: center">Original image</p>
-
-<img src="./examples/input.jpg" alt="Overview" width="60%" height="300px">
+<p align="center">
+  <b>Original image</b>
+  <img src="./img/input.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
 * Select region of interest
 
