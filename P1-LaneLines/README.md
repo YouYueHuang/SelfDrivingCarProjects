@@ -51,7 +51,7 @@ The following steps are listed based on the image processing order. The images a
 
 ```python
 vertices = np.array([[(0, img_size[0])
-                     ,(img_size[1]//2, img_size[0]//2)
+                     , (img_size[1]//2, img_size[0]//2)
                      , (img_size[1], img_size[0])]], dtype=np.int32)
 
 mask = np.zeros_like(img)   
@@ -62,7 +62,6 @@ else:
     ignore_mask_color = 255
 
 cv2.fillPoly(mask, vertices, ignore_mask_color)
-
 masked_image = cv2.bitwise_and(img, mask)
 ```
 
@@ -150,10 +149,12 @@ threshold = 50
 min_line_len = 100
 max_line_gap = 160
 
-cv2.HoughLinesP(img, rho, theta
-				, threshold, np.array([])
-    			, minLineLength=min_line_len
-                , maxLineGap=max_line_gap), axis=1)
+cv2.HoughLinesP(img
+              , rho
+              , theta
+              , threshold, np.array([])
+              , minLineLength=min_line_len
+              , maxLineGap=max_line_gap), axis=1)
 ```
 
 <p align="center">
