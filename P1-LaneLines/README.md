@@ -57,9 +57,9 @@ The following steps are listed based on the image processing order. The images a
     <td align="center"><b>RG distribution</b></td>
   </tr> 
   <tr>
-    <td><img src="./img/GB_distribution.png" alt="Overview" width="30%"></td>
-    <td><img src="./img/RB_distribution.png" alt="Overview" width="30%"></td>
-    <td><img src="./img/RG_distribution.png" alt="Overview" width="30%"></td>
+    <td><img src="./img/GB_distribution.png" alt="Overview"></td>
+    <td><img src="./img/RB_distribution.png" alt="Overview"></td>
+    <td><img src="./img/RG_distribution.png" alt="Overview"></td>
   </tr>
 </table>
 
@@ -90,8 +90,8 @@ The following steps are listed based on the image processing order. The images a
 </p>
 
 <p align="center">
-  <b>Distance and slope feature of Hough lines in Scatter matrix plot</b><br>
-  <img src="./img/Feature_of_interest.jpg" alt="Overview" width="60%" height="300px">
+  <b>Scatter matrix plot of distance, length and slope of Hough lines</b><br>
+  <img src="./img/LineFeatureScattermatrix.png" alt="Overview" width="60%" height="300px">
 </p>
 
 <p align="center">
