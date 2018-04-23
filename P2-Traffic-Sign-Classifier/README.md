@@ -1,45 +1,4 @@
-## Building a Traffic Sign Classifier
-
-![traffic signs](img/Model_archi.png)
-
-Overview
----
-In this project, deep learning techniques and convolutional neural networks were applied to classify traffic signs. The traffic sign images are from [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After training, the images of the traffic signs from the Internet were incorporated to test the performance on the model .
-
-Files
----
-The structure and useage of the files in this repository are as follows:
-
-1. `Main_pipeline.ipynb` and `Main_pipeline.html`
-  - This part mainly contains the data exploration, visualization, preprocessing, model architecture and evaluation on test images.
-
-2. `model_ec2.ipynb`
-  - Most part of this file are the same the previous one. The differences are the code and training procedure. This file was run on AWS EC2 with GPU, so more parameter tuning were tried on the files. Also, some code change on Keras was performed to solve the compatibility issue. Some details could be found in the `Readme.md` of another depository [test_on_AWS_EC2](https://github.com/YouYueHuang/test_on_AWS_EC2)
-
-3. `model_reshuffled_data.ipynb`
-  - Most part of this file are the same the previous one. The only difference is the data. The training, test and validation sets are under mixing, shuffling and partitioning to recreate new datasets.
-
-4. `download_file.py`
-  - This file contains the functions to download the data because the original data size is over 100 MB and it could not be uploaded to Github.
-
-5. `test_images`
-  - It contains 10 images from the Internet for testing, and the file name is its class. Each image are resized to 32*32 already.
-  - In web_crawler, there are 5 directories and test images with the file name of its class. They were crawled with [icrawler](https://pypi.python.org/pypi/icrawler), and the image size are not a fixed number.
-
-6. `model`
-  - It contains the weight of trained model. All are in the directory of `EC2_model`
-
-7. `img`
-  - It stores the images during analysis
-
-8. `test`
-  - It contains some functions for preprocessing (grayscale, contrast-limited adaptive histogram equalization, histogram of oriented gradients, data augmentation, data shuffeling and partitioning, stratified sampling, Xavier weight initialization), visualization(tensorboard, graphviz), CNN model framework(inception, devolution net). 
-
-9. `ref`
-  - It stores the papers of related research work.
-
-10. `logs`
-  - It stores the summary of model training log in previous models, and it is mainly for visualization with TensorBoard. It is abandoned for this moment.
+## Traffic Sign Classifier
 
 [//]: # (Image References)
 
@@ -61,7 +20,48 @@ The structure and useage of the files in this repository are as follows:
 [image15]: ./img/class05.PNG "class05"
 [image16]: ./img/class19.PNG "class19"
 
-Data exploration
+![traffic signs](img/Model_archi.png)
+
+### Overview
+---
+In this project, deep learning techniques and convolutional neural networks were applied to classify traffic signs. The traffic sign images are from [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After training, the images of the traffic signs from the Internet were incorporated to test the performance on the model .
+
+### File structure
+---
+The structure and useage of the files in this repository are as follows:
+
+* `Main_pipeline.ipynb` and `Main_pipeline.html`
+  - This part mainly contains the data exploration, visualization, preprocessing, model architecture and evaluation on test images.
+
+* `model_ec2.ipynb`
+  - Most part of this file are the same the previous one. The differences are the code and training procedure. This file was run on AWS EC2 with GPU, so more parameter tuning were tried on the files. Also, some code change on Keras was performed to solve the compatibility issue. Some details could be found in the `Readme.md` of another depository [test_on_AWS_EC2](https://github.com/YouYueHuang/test_on_AWS_EC2)
+
+* `model_reshuffled_data.ipynb`
+  - Most part of this file are the same the previous one. The only difference is the data. The training, test and validation sets are under mixing, shuffling and partitioning to recreate new datasets.
+
+* `download_file.py`
+  - This file contains the functions to download the data because the original data size is over 100 MB and it could not be uploaded to Github.
+
+* `test_images`
+  - It contains 10 images from the Internet for testing, and the file name is its class. Each image are resized to 32*32 already.
+  - In web_crawler, there are 5 directories and test images with the file name of its class. They were crawled with [icrawler](https://pypi.python.org/pypi/icrawler), and the image size are not a fixed number.
+
+* `model`
+  - It contains the weight of trained model. All are in the directory of `EC2_model`
+
+* `img`
+  - It stores the images during analysis
+
+* `test`
+  - It contains some functions for preprocessing (grayscale, contrast-limited adaptive histogram equalization, histogram of oriented gradients, data augmentation, data shuffeling and partitioning, stratified sampling, Xavier weight initialization), visualization(tensorboard, graphviz), CNN model framework(inception, devolution net). 
+
+* `ref`
+  - It stores the papers of related research work.
+
+* `logs`
+  - It stores the summary of model training log in previous models, and it is mainly for visualization with TensorBoard. It is abandoned for this moment.
+
+### Data exploration
 ---
 1. Dataset Summary
 
@@ -72,25 +72,28 @@ Data exploration
 
 2. Exploratory Visualization
 
-The following figure shows sample image of each class.
+<p align="center">The following figure shows sample image of each class.</p>
 ![alt text][image10]
 
-Normalized frequencies of each class in the training, validation and test set are shown below. It shows that the original datasets were sampled evenly for each class, so the these three sets follows the same distribution. 
-![alt text][image9]
-
-Next, We plotted the histogram of Training data to give intuition on the frequency distrpution.
+<p align="center">The following figure shows the frequency distribution of training data.</p>
 ![alt text][image2]
 
-Data Pipeline
+<p align="center">Normalized frequencies of each class in the training, validation and test set are shown below. It shows that the original datasets were sampled evenly for each class, so the these three sets follows the same distribution.</p>
+![alt text][image9]
+
+### Preprocessing
 ---
-**Preprocessing**
 
-  - [Data augmentation](https://github.com/vxy10/ImageAugmentation): Due to limited data and the class imbalance, additional data was generated by affine transformation. After data augmentation, the size of of each class in training set is at least 600. The size of training set becomes 41469. The transformations include: 
-    * Rotation with random number generated between +/- 15 degress 
-    * Translation by +/- 10 pixels along vertical and horizontal direction
-    * Shearing
+#### [Data augmentation](https://github.com/vxy10/ImageAugmentation)
+---
+Due to limited data and the class imbalance, additional data was generated by affine transformation to improve model generalization. After data augmentation, the size of of each class in training set is at least 600. The size of training set becomes 41469. The transformations include: 
 
-The example of augmented data is as follows:
+* Rotation with random number between +/- 15 degress 
+* Translation by +/- 10 pixels along vertical and horizontal direction
+* Shearing
+* Scaling
+
+<p align="center">The examples of augmented data after Affine Transformation are shown as follows:</p>
 
 <table>
   <tr>
@@ -98,36 +101,54 @@ The example of augmented data is as follows:
     <td align="center">Affine Transformed images</td>
   </tr> 
   <tr>
-    <td><img src='./img/sample_traffic_sign.jpg' style='width: 500px;'></td>
-    <td><img src='./img/dataAugment.png' style='width: 500px;'></td>
+    <td><img src='./img/sample_traffic_sign.jpg' style='width: 49%;'></td>
+    <td><img src='./img/dataAugment.png' style='width: 49%;'></td>
   </tr>
 </table>
   
-  - Image sharening: Gaussian blur was applied to increase the contrast of images.
+#### Image sharening
+---
+Gaussian blur was applied to enhance the contrast of images.
 
-The example of image sharpening (Speed limit (30km/h))
+<p align="center">The example of image sharpening (Speed limit (30km/h))</p>
+
 ![alt text][image14]
 
-  - Image normalization: The RGB value of a image is divided by 255, and the range is between 0~1.
-  - Dataset shuffling: It is applied to increase the robustness.
+#### Normalization
+---
+The RGB value of a image was divided by 255, and the range was between 0~1.
 
-**Model architecture**
+#### Dataset shuffling
+---
+The dataset was randomly shuffled, and 20% of the data was put into a validation set. 
 
-  - Components: There are three types of component in this architecture 
-    * Conv-L2-Batchnorm-Relu 
-    * Maxpool-Dropout 
-    * Fully connection-Relu-Dropout. MaxPooling layer reduces signal and makes the model more robust against spatial invariance. The exact amount of maxpooling will make the model work fine and reduce the parameter. Fully connected layer are applied at the end to classify the images to their classes. 
+### Model architecture
+---
 
-  - Regularization: The combination of L2 and dropout will act as a regularizer, preventing overfitting and keeping the weights small so that the model is able to generalize pretty well.
+#### Component
+---
+There are three types of component in this architecture 
+* Conv-L2-Batchnorm-Relu 
+* Maxpool-Dropout 
+* Fully connection-Relu-Dropout. 
 
-  - Batch Normalizaion: It is applied for preventing the interaction of each layer and the saturation of the filters after activation.
+MaxPooling layer reduces signal and makes the model more robust against spatial invariance. The exact amount of maxpooling will make the model work fine and reduce the parameter. Fully connected layer are applied at the end to classify the images to their classes. 
 
-  - Parameters:
-    * Learning rate :0.0001 ~ 0.00001
-    * Batch size: 128
-    * Epoch: 60 (30+30)  
-    * Keep probability: 0.1 ~ 0.3 
-    * Weight decay: 1e-4 ~ 5e-5
+#### Regularization
+---
+The combination of L2 and dropout will act as a regularizer, preventing overfitting and keeping the weights small so that the model is able to generalize pretty well.
+
+#### Batch Normalizaion
+---
+It is applied for preventing the interaction of each layer and the saturation of the filters after activation.
+
+#### Hyperparameters for Training:
+---
+* Learning rate :0.0001 ~ 0.00001
+* Batch size: 128
+* Epoch: 60 (30+30)  
+* Keep probability: 0.1 ~ 0.3 
+* Weight decay: 1e-4 ~ 5e-5
 
 The training model is built using keras containing layers as described below:
 
