@@ -17,8 +17,8 @@
 
 <table>
   <tr>
-    <td align="center">First half part of project video</td>
-    <td align="center">Second half part of project video</td>
+    <td align="center">First half part of vehicle detecting video</td>
+    <td align="center">Second half part of vehicle detecting video</td>
   </tr> 
   <tr>
     <td><a href="https://youtu.be/hGViPj14bw8"><img src='./img/01.gif' style='width: 500px;'></a></td>
@@ -46,19 +46,13 @@ The goals / steps of this project are the following:
 ---
 The structure and usage of the files in this repository are as follows:
 
-`Main_pipeline.ipynb`: This part contains the code for feature extraction, preprocessing, classifier training and sliding window.
-
-`processed_project_video.mp4`: The final result of vehicle detection pipeline.
-
-`test_images`: It contains images for testing feature extraction, sliding window drawing and.
-
-`videos`: It contains test videos `project_video.mp4` and the search region of sliding window. 
-
-`img`: It stores the images of README.md.
-
-`saved_file`: It contains the `model.p` file. The model stores the parameters for feature extraction.
-
-`color_space_exploration.py`: The function plots the distribution of the pixels over different color spaces (RGB, HLS, HSV, LAB, LUV, YUV, YCrCb)
+* `Main_pipeline.ipynb`: This part contains the code for feature extraction, preprocessing, classifier training and sliding window.
+* `processed_project_video.mp4`: The final result of vehicle detection pipeline.
+* `test_images`: It contains images for testing feature extraction, sliding window drawing and.
+* `videos`: It contains test videos `project_video.mp4` and the search region of sliding window. 
+* `img`: It stores the images of README.md.
+* `saved_file`: It contains the `model.p` file. The model stores the parameters for feature extraction.
+* `color_space_exploration.py`: The function plots the distribution of the pixels over different color spaces (RGB, HLS, HSV, LAB, LUV, YUV, YCrCb)
 
 ### Datasets
 ---
@@ -70,21 +64,20 @@ Total image number: 17760
 Number of car images :  8792
 Number of non-car images:  8968
 
-The following figures shows the examples of car and not-car images 
+<p align="center"><b>The following figures shows the examples of car and not-car images.</b></p>
+
 ![alt text][image1]
 
 ![alt text][image2]
 
-### Pipeline
 ### Feature Extraction
----
-
 #### Histogram of Oriented Gradients (HOG)
-
+---
 I used the `skimage.feature.hog()` to extracted HOG features just once for the entire region of interest in each full image / video frame. 
 Next, I resized the region of interest of a image to solve the car size issue. The size of training samples are 64x64, so we need to resize the samples by sliding window and fit the samples into the classifer. If the prediction is positive, then the window is stored in the candidate list.
 
-The following figures shows the HOG features of a car and a not-car image 
+<p align="center"><b>The following figures shows the HOG features of a car and a not-car image.</b></p>
+
 ![alt text][image3]
 
 ```python
@@ -141,11 +134,13 @@ hog3 = get_hog_features(ch3, orient, pix_per_cell, cell_per_block, vis=False, fe
 
 To choose the parameters of the HOG feature extraction, I try to quantify the disimilarity of a car and a not car image with absolute mean difference. To compare the result, I visualized the average difference with boxplot below: 
 
-The following figures shows boxplot of the absolute mean difference of a car image and all not-car images with different HOG parameters
+
+<p align="center"><b>The following figures shows boxplot of the absolute mean difference of a car image and all not-car images with different HOG parameters.</b></p>
+
 ![alt text][image12]
 
 #### Spatial Binning of Color and Histogram of Color
-
+---
 With resized image and color distribution of pixels, we can get features of different pixel resolution and color space. One advantage is to reduce the feature number and keep the relevant features at lower resolution.
 
 A convenient function for scaling down the resolution of an image is OpenCV's `cv2.resize()`. It can be used scale a color image or a single color channel as follows:
@@ -164,21 +159,27 @@ channel3_hist = np.histogram(img[:,:,2], bins=nbins)
 hist_features = np.concatenate((channel1_hist[0], channel2_hist[0], channel3_hist[0]))
 ```
 
-The following figures shows the example of a car image (64x64) and its binned color features (16x16)
+<p align="center"><b>The following figures shows the example of a car image (64x64) and its binned color features (16x16).</b></p>
+
 ![alt text][image13]
 
 ![alt text][image4]
 
-The following figures shows the line graph of the RGB distribution of a car image
+<p align="center"><b>The following figures shows the line graph of the RGB distribution of a car image.</b></p>
+
 ![alt text][image5]
 
-The following figures shows the distribution of a car and a not-car images in different color spaces(RGB, HSV, HLS, LUV, YUV, LAB, YCrCb)
+<p align="center"><b>The following figures shows the distribution of a car and a not-car images in different color spaces(RGB, HSV, HLS, LUV, YUV, LAB, YCrCb).</b></p>
+
 ![alt text][image6]
 
-The following figures shows the view of a video frame in different color spaces(RGB, HSV, HLS, LUV, YUV, LAB, YCrCb)
+
+<p align="center"><b>The following figures shows the view of a video frame in different color spaces(RGB, HSV, HLS, LUV, YUV, LAB, YCrCb)</b></p>
+
 ![alt text][image7]
 
-The following figures shows the view of a video frame in RGB color space
+<p align="center"><b>The following figures shows the view of a video frame in RGB color space.</b></p>
+
 ![alt text][image8]
 
 ### Classifier training
@@ -257,13 +258,16 @@ out_img, bboxes = find_cars(image, y_start, y_stop, scale, svc, X_scaler, orient
 
 The figures below are the examples of the result of sliding windows, thresholding, heatmap and vehicle labelling.
 
-The following figures shows the boxes with positive predictions from test images
+<p align="center"><b>The following figures shows the boxes with positive predictions from test images.</b></p>
+
 ![alt text][image9]
 
-The following figures shows one test video frame with detected boxes, heatmap, `label` image, and the detected boxes based on labelled region.
+<p align="center"><b>The following figures shows one test video frame with detected boxes, heatmap, `label` image, and the detected boxes based on labelled region.</b></p>
+
 ![alt text][image10]
 
-The following figures shows an example with final detected boxes after thresholding.
+<p align="center"><b>The following figures shows an example with final detected boxes after thresholding.</b></p>
+
 ![alt text][image11]
 
 

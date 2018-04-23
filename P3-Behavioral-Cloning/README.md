@@ -28,8 +28,8 @@
 
 <table>
   <tr>
-    <td align="center">Autonomous driving in the lakeside track in the simulator</td>
-    <td align="center">The view of Autonomous driving in the lakeside track</td>
+    <td align="center">Autonomous driving around lakeside track in the simulator</td>
+    <td align="center">The view of central camera</td>
   </tr> 
   <tr>
     <td><a href="https://youtu.be/PDS6w3e9rOE"><img src='./imgs/record_03.gif' style='width: 500px;'></a></td>
@@ -41,8 +41,6 @@
 ---
 In this project, deep neural networks and convolutional neural networks were applied to clone driving behavior. A model will be built with Keras to output a steering angle to an autonomous vehicle.
 
-A [simulator](https://github.com/udacity/self-driving-car-sim) from Udacity was used to steer a car around a track for data collection. The image data and steering angles was fed into a neural network model to drive the car autonomously around the track.
-
 ### Project goal
 ---
 The goals / steps of this project are the following:
@@ -50,7 +48,8 @@ The goals / steps of this project are the following:
 * Design, train and validate a model that predicts a steering angle from image data
 * Use the model to drive the vehicle autonomously around the lakeside track in the simulator. In the meanwhile, the vehicle should remain on the road for an entire loop around the track.
 
-The following figure shows the view of the lakeside track
+<p align="center"><b>The following figure shows the view of the lakeside track.</b></p>
+
 ![alt text][image1]
 
 ### File structure
@@ -67,9 +66,11 @@ The structure and usage of the files in this repository are as follows:
 * `data`: this directory contains training, validation images and driving logs. In `driving_log.csv`, each row in this sheet correlates the `img` images with the steering angle, throttle, brake, and speed of the car. The model.h5 was trained with these measuresments to steer the angle.
 * `model`: this directory contains the models of 20 epochs in this project.
 
-### How to use
+### Get started
 #### Drive the car
 ---
+A [simulator](https://github.com/udacity/self-driving-car-sim) from Udacity was used to steer a car around a track for data collection. The image data and steering angles was fed into a neural network model to drive the car autonomously around the track.
+
 To run the trained model in the Udacity simulator, first launch the simulator and select "AUTONOMOUS MODE". Then run
 the model (model.h5) be used with drive.py using this command:
 
@@ -107,7 +108,8 @@ The training data was collected using Udacity's simulator in training mode on th
 * I recorded the car recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn back to the center of the roead.
 * After the collection process, I had 12840 number of frames from center camera. I then randomly shuffled the data set and put 20% of the data into a validation set. 
 
-Below are example images from the left, center, right cameras and a flipping image
+<p align="center"><b>Below are example images from the left, center, right cameras and a flipping image.</b></p>
+
 ![alt text][image2]
 
 ### Preprocessing
@@ -115,19 +117,19 @@ Below are example images from the left, center, right cameras and a flipping ima
 ---
 I followed the Nvidia model with YUV color space, and there are also other color spaces which could recognize the boudary of road and not-road part.
 
-The following figure shows the view of 10 frames in YUV color space
+<p align="center"><b>The following figure shows the view of 10 frames in YUV color space.</b></p>
 
 ![alt text][image10]
 
-Y channel
+<p align="center"><b>Y channel</b></p>
 
 ![alt text][image11]
 
-U channel
+<p align="center"><b>U channel</b></p>
 
 ![alt text][image12]
 
-V channel
+<p align="center"><b>V channel</b></p>
 
 ![alt text][image13]
 
@@ -139,7 +141,8 @@ The sky part and the front of the car couldn't help predict the steering angle, 
 image[start_Y:end_Y, :, :]
 ```
 
-The following figure shows 10 example frames after cropping
+<p align="center"><b>The following figure shows 10 example frames after cropping</b></p>
+
 ![alt text][image3]
 
 #### Image Resizing
@@ -150,7 +153,7 @@ I resized the images and made it smaller which can reduce the parameter number o
 cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT), cv2.INTER_AREA)
 ```
 
-The following figure shows 10 example frames after resizing
+<p align="center"><b>The following figure shows 10 example frames after resizing</b></p>
 
 ![alt text][image4]
 
@@ -159,11 +162,11 @@ The following figure shows 10 example frames after resizing
 
 When steering the car in training mode, I was just tapping the direction keys for a short moment. That might lead to the significant drop and spike in the measurements of steering angle. Therefore, some frames needs the car to turn direction and it gave an appropriate steering angle, whereas the frames of its previous and following moments got 0 or small steering angle. I applied some moving average and interpolation techniques to compensate those inappropriate measurements.
 
-The following figure shows the histogram of steering angle of (from left to right) (1) center lane driving, (2) recovery driving from the sides and driving around curves, (3) training set, (4) validation set, (5) center lane driving with steering angle smoothing and (6) recovery driving from the sides and driving around curves with steering angle smoothing.
+<p align="center"><b>The following figure shows the histogram of steering angle of (from left to right) (1) center lane driving, (2) recovery driving from the sides and driving around curves, (3) training set, (4) validation set, (5) center lane driving with steering angle smoothing and (6) recovery driving from the sides and driving around curves with steering angle smoothing.</b></p>
 
 ![alt text][image5]
 
-The following figure is the time series plot of steering angle  of (from left to right) (1) before smoothing and (2) after smoothing compensation
+<p align="center"><b>The following figure is the time series plot of steering angle  of (from left to right) (1) before smoothing and (2) after smoothing compensation.</b></p>
 
 ![alt text][image6]
 
@@ -196,7 +199,7 @@ The following figure is the time series plot of steering angle  of (from left to
 
 * Due to the limited computation resource, I created the batch on the fly with python `generator`.
 
-**visualization of the architecture**
+<p align="center"><b>Visualization of the architecture.</b></p>
 
 ![alt text][image18]
 
@@ -283,13 +286,13 @@ The following figure shows the view of 10 frames with noise of random blotting
 	(5) SV in HSV
 	(6) RGB
 
-The following figure shows the view of 10 frames of A channel in LAB color space for (1) lakeside track and (2) mountain track
+<p align="center"><b>The following figure shows the view of 10 frames of A channel in LAB color space for (1) lakeside track and (2) mountain track.</b></p>
 
 ![alt text][image9]
 
 ![alt text][image8]
 
-The following figure shows the view of 10 frames of S channel in HLS color space for (1) lakeside track and (2) mountain track
+<p align="center"><b>The following figure shows the view of 10 frames of S channel in HLS color space for (1) lakeside track and (2) mountain track.</b></p>
 
 ![alt text][image14]
 
