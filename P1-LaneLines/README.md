@@ -1,10 +1,10 @@
-# **Finding Lane Lines on the Road** 
+# Finding Lane Lines on the Road
 
-Overview
+## Overview
 ---
 To develop a self-driving car, one of the critical issues is to tell the car where to go. The lines on the road that show drivers where the lanes act as a constant reference for where to steer the vehicle. This project builds an algorithm and applies Python packages to automatically detect lane lines in images.
 
-Getting Started
+## Getting Started
 ---
 * [Main_pipeline.ipynb](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/Main_pipeline.ipynb) 
 This notebook contains the code to detect lane line and visualizes the processing steps.
@@ -18,11 +18,11 @@ This directory contains the test images and the detected lane lines.
 * [test_videos](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos), [test_videos_output](https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/CarND-LaneLines-P1-master/test_videos_output) 
 This directory contains the test videos and the detected lane lines.
 
-Pipeline
+## Pipeline
 ---
 The following steps are listed based on the image processing order. The images are the results of that step. 
 
-* Original image
+<p style="text-align: center;font-size:20px">Original image</p>
 
 <img src="./examples/input.jpg" alt="Overview" width="60%" height="300px">
 
@@ -95,8 +95,6 @@ challenge.mp4
 
 Differences from the baselines
 ---
-* Add color filters for yellow and white lane lines.
-
 * Add slope and distance feature for removing noise. The distance is defined as the average distance of end points of a Hough line. The slope feature is the slope of a Hough line. Intercept was also considers as a filter feature, but it turn out to be potential problem. Some correct lines might be removed if the threshold is not well set. Also, the threshold is hard to be generalized. The shift of the car position on the road might lead to bad filtering resulet. For instance, Sometimes no lane line is detected.
 
 * The algorithm assumes that longer Hough lines are more likely to be lane line segments. Based on the assumption, squared Hough line length is applied as weight to calculate the mass center of the Hough lines. The slope is the average slope of the Hough lines. The mass center and the average slope are used for lane line extrapolation.
