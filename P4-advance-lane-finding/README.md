@@ -77,6 +77,8 @@ The structure and useage of the files in this repository are as follows:
 ----
 The OpenCV functions `cv2.findChessboardCorners()` and `cv2.drawChessboardCorners()` are used for image calibration. There are chessboard images stored in `./camera_cal/chessboard_6x8` and `chessboard_6x9`, taken from different angles with the same camera, and we'll use them as input for camera calibration routine.
 
+The chessboard images have been used to calculate the camera calibration matrix and distortion coefficients, and these were used to remove distortion from one of the calibration images, demonstrating the effect.
+
 `cv2.findChessboardCorners()` attempts to determine whether the input image is a view of the chessboard pattern and detect internal chessboard corners, and then `cv2.drawChessboardCorners()` will mark internal chessboard corners. 
 
 Arrays of object points, corresponding to the location of internal corners of a chessboard, and image points, the pixel locations of the internal chessboard corners determined by `cv2.findChessboardCorners()`, are fed to `cv2.drawChessboardCorners()` which returns camera calibration and distortion coefficients. The code are shown below:
@@ -100,7 +102,7 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(object_pts, image_pts, img_si
 
 ### Distortion Correction
 ---
-OpenCV provides `cv2.undistort` function, which transforms an image to compensate for radial and tangential lens distortion. The code are shown below:
+The undistorted test image shows that distortion correction has been properly applied to images of highway driving. OpenCV provides `cv2.undistort` function, which transforms an image to compensate for radial and tangential lens distortion. The code are shown below:
 
 ```python
 undistort_img = cv2.undistort(img, mtx, dist, None, mtx)
@@ -289,24 +291,112 @@ right_curverad = ((1 + (2*right_fit_cr[0]*y_eval*ym_per_pix + right_fit_cr[1])**
 
 ### Result
 ---
-1. The pipeline works well on the `project.ma4` which of result could be found in [bird view](test_videos//test_output//bird_view_project_video.mp4) and [perspective view](test_videos//test_output//perspective_view_project_video.mp4), but performs terribly in `challenge_video.mp4` and `harder_challenge.mp4`. The reasons are mainly from the noises such as edge of the road shoulder, fence, shadow, sunshine, stains, road segment with different colors due to respilled asphalt. I applied combination of thresholding techniques and add up detected pixels. I give more weights to the pixels with high values because it was detected as a lane more times than other pixels, but 
+1. The pipeline works well on the `project.ma4` which of result could be found in [bird view](test_videos//test_output//bird_view_project_video.mp4) and [perspective view](test_videos//test_output//perspective_view_project_video.mp4), but performs terribly in `challenge_video.mp4` and `harder_challenge.mp4`. The reasons are mainly from the noises such as edge of the road shoulder, fence, shadow, sunshine, stains, road segment with different colors due to respilled asphalt. I applied combination of thresholding techniques and add up detected pixels. I give more weights to the pixels with high values because it was detected as a lane more times than other pixels, but the results were still insatisfiable. One thing I also have seen is that the L channel from LUV with lower and upper thresholds around 225 & 255 respectively works very well to pick out the white lines, even in the parts of the video with heavy shadows and brighter pavement. Another one is the B channel from LAB which does a great job with the yellow lines with thresholds around 155 & 200.
 
-2. The lane line on the far side is unclear. I applied contrast enhancement techniques under LAB color space, but the performance did not change much. Actually, these techniques were applied to images from bird view, which are quite vague after transforming. One approach could be using thresholds on perspective images whose lanes are still clear. In addition, Canny edge detection and Hough line detection were not applied in this pipeline, but they actually can assist in enhancing the outline of lane line.
+2. The lane line on the far side is unclear. I applied contrast enhancement techniques under LAB color space, but the performance did not change much. Actually, these techniques were applied to images from bird view, which are quite vague after transforming. One approach could be using thresholds on perspective images whose lanes are still clear. In addition, Canny edge detection and Hough line detection were not applied in this pipeline, but they actually can assist in enhancing the outline of lane line. All in all, the lane lines after the perspective transform appear very close to parallel in the birds-eye view images for project video.
 
-3. Some lanes are dash lines. Instead, the lines at the road shoulder are solid lines. The maginitude of dash line in histogram is less than that of solid line. I tried to give more weight to color filters, but the color filter cannot resist the noise of shadow due to the change of color. Another issue is the gap between dash lines could be quite large. In this case, the height of the window should be larger to prevent the low peak in histogram.
+3. Some lanes are dash lines. Instead, the lines at the road shoulder are solid lines. The maginitude of dash line in histogram is less than that of solid line. I tried to give more weight to color filters, but the color filter cannot resist the noise of shadow due to the change of color. Another issue is the gap between dash lines could be quite large. In this case, the height of the window should be larger to prevent the low peak in histogram. 
 
 ### Conclusion
 ---
 1. The pipeline detects the lane line from scratch for each frame. It will work well in simple situation like `project.ma4`. However, the sliding window might lose the real lane due to the bad window size and terrible initial state such as sunshine which made the lane line disapear in the frame. Some caches could be imported to memorize the previous fitting lane to assist the guess of lane line.
 
-2. Some time the sliding window can not find any lane pixels. Except the dash line, there are two common cases: dash line and lane with low curvature radii. For these two cases, the window needs to be long and wide enough, but large window might detect noises which influces fitting line. 
+2. Sometimes the sliding window can not find any lane pixels. Except the dash line, there are two common cases: dash line and lane with low curvature radii. For these two cases, the window needs to be long and wide enough, but large window might detect noises which influces fitting line. 
    * One solution is to reuse the binary filters when the sliding window could not find lane pixels. 
    * The second solution is to move the window based on the detected pixels with low y values which helps sliding window catch up the fast-changing lane with low curvature radii. 
    * The third solution could be interpolting from the noises. Sometimes there are detected lines from the fence, road shoulder, etc. I took them as noises in the pipeline, but it could be used to guess the lane shape and direction with Canny edge detection. Once we got the information of other egde, the orientation of current lane and road condition could be understood better. Furthurmore, we can make decisions such as changing the lane.
 
-3. Even when everything is working, the detected lines could jump around from frame to frame a bit and it can be preferable to smooth over the last n frames of video to obtain a cleaner result.
+3. After finding a confident detection in one frame, the histogram search could be skipped in the next frame and go straight with the search in a tight proximity around the polynomials from the previous frames. An example of how to implement it is as follows:
+I recommend implementing something like this:
+
+```python
+if line was detected in previous frame:
+  skip sliding windows
+else:
+  sliding window search
+```
+
+4. Even when everything is working, the detected lines could jump around from frame to frame a bit and it can be preferable to smooth over the last n frames of video to obtain a cleaner result. One thing to be careful with here is that the lane should be shifted horizontally after applying the perspective transform, otherwise there can be issues with calculating the vehicle offset from center because the camera position will no longer be located at the center of the image.
+
+### Possible improvement
+---
+1. To get accurate estimates of the measurements (where the lane lines are, estimation of how much the road is curved and where the vehicle is located with respect to the center of the lane. It is important to make sure that appropriate pixel-to-meter conversion factors is used based on the perspective transform applied to the images. For example, a conversion of xm_per_pix = 3.7/700 assumes that the lane is 700 pixels wide in the warped images, so if the actual lane width differs from 700 pixels you should replace the 700 with the actual width of the lane.
+
+2. Other improvements could be the implementation of some sanity checks which look for unreasonable detections to prevent them being used in the output video. For sanity checks, some of the following criteria could be considered:
+  - Are the two polynomials an appropriate distance apart based on the known width of a highway lane?
+  - Do the two polynomials have same or similar curvature?
+  - Have these detections deviated significantly from those in recent frames?
+
+When a sanity check fails in a single frame, instead of displaying the lines that with errors, the current detection could be discarded and reuse the confident detections from prior frames.
+
 
 ### Reference
 ---
 * [U.S. Road Regulation](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC)
 * [Curvature formula](https://www.intmath.com/applications-differentiation/8-radius-curvature.php)
+
+### Appendix
+---
+1. The detail of code for searching without sliding windows is as follows:
+
+```python
+# Assume you now have a new warped binary image 
+# from the next frame of video (also called "binary_warped")
+# It's now much easier to find line pixels!
+nonzero = binary_warped.nonzero()
+nonzeroy = np.array(nonzero[0])
+nonzerox = np.array(nonzero[1])
+margin = 100
+left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + 
+left_fit[2] - margin)) & (nonzerox < (left_fit[0]*(nonzeroy**2) + 
+left_fit[1]*nonzeroy + left_fit[2] + margin))) 
+
+right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + 
+right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + 
+right_fit[1]*nonzeroy + right_fit[2] + margin)))  
+
+# Again, extract left and right line pixel positions
+leftx = nonzerox[left_lane_inds]
+lefty = nonzeroy[left_lane_inds] 
+rightx = nonzerox[right_lane_inds]
+righty = nonzeroy[right_lane_inds]
+# Fit a second order polynomial to each
+left_fit = np.polyfit(lefty, leftx, 2)
+right_fit = np.polyfit(righty, rightx, 2)
+# Generate x and y values for plotting
+ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
+left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
+right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
+```
+
+2. visualize the detected lane
+
+```python
+# Create an image to draw on and an image to show the selection window
+out_img = np.dstack((binary_warped, binary_warped, binary_warped))*255
+window_img = np.zeros_like(out_img)
+# Color in left and right line pixels
+out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
+out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
+
+# Generate a polygon to illustrate the search window area
+# And recast the x and y points into usable format for cv2.fillPoly()
+left_line_window1 = np.array([np.transpose(np.vstack([left_fitx-margin, ploty]))])
+left_line_window2 = np.array([np.flipud(np.transpose(np.vstack([left_fitx+margin, 
+                              ploty])))])
+left_line_pts = np.hstack((left_line_window1, left_line_window2))
+right_line_window1 = np.array([np.transpose(np.vstack([right_fitx-margin, ploty]))])
+right_line_window2 = np.array([np.flipud(np.transpose(np.vstack([right_fitx+margin, 
+                              ploty])))])
+right_line_pts = np.hstack((right_line_window1, right_line_window2))
+
+# Draw the lane onto the warped blank image
+cv2.fillPoly(window_img, np.int_([left_line_pts]), (0,255, 0))
+cv2.fillPoly(window_img, np.int_([right_line_pts]), (0,255, 0))
+result = cv2.addWeighted(out_img, 1, window_img, 0.3, 0)
+plt.imshow(result)
+plt.plot(left_fitx, ploty, color='yellow')
+plt.plot(right_fitx, ploty, color='yellow')
+plt.xlim(0, 1280)
+plt.ylim(720, 0)
+```

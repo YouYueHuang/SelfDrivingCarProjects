@@ -135,7 +135,7 @@ I followed the Nvidia model with YUV color space, and there are also other color
 
 #### Image Cropping
 ---
-The sky part and the front of the car couldn't help predict the steering angle, so I cropped the image by slicing the tensors. I supplied the start and the end of y coordinates to the slice. The code is as follows:
+The sky part and the front of the car couldn't help predict the steering angle, so I cropped the image by slicing the tensors. I supplied the start and the end of y coordinates to the slice. The code is shown below. Keras also provides a [Cropping2D](https://keras.io/layers/convolutional/#cropping2d) layer to carry out the cropping operation. In comparison with some custom-defined function, the chief advantage is that the Keras layer is better optimized to crop multiple images in parallel.
 
 ```python
 image[start_Y:end_Y, :, :]
@@ -248,7 +248,7 @@ model.add(Dense(1))
 
 ### Result
 ---
-1. When running the simulator to see how well the car was driving around lakeside track without steering angle smoothing. The vehicle fell off the track at the bridge and the road corners. To improve the driving behavior in these cases, I applied moving average and interpolation techniques to alleviate the abrupt changes of the steering angle. At the end of the process, the car is able to drive autonomously around the track without leaving the road.
+1. When running the simulator to see how well the car was driving around lakeside track without steering angle smoothing. The vehicle fell off the track at the bridge and the road corners. To improve the driving behavior in these cases, I applied moving average and interpolation techniques to alleviate the abrupt changes of the steering angle. At the end of the process, the car is able to drive autonomously around the track without leaving the road. A simpler way might be to just apply the correction to the steering values only when the steering angle value is greater than a certain value, e.g. 0.15. This could also allow the vehicle to drift a tolerable number without the interference of rapid frame-by-frame movement of steering for a much smoother drive.
 
 2. In order to gauge how well the model was working, I found that the Nvidia model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. To combat the overfitting, I modified the model with dropout layers and smoothing techniques in order to reduce overfitting. The following plot shows both traing loss and validation loss go more consistently.
 
@@ -265,7 +265,7 @@ model.add(Dense(1))
 
 ![alt text][image5]
 
-2. In mountain track (track 2), there are more shadows and plants on the road, and that might generate noises and lead to bad prediction performance. The model could be trained with artificial noises such as shadow or blot to increase the robustness.
+2. In mountain track (track 2), there are more shadows and plants on the road, and that might generate noises and lead to bad prediction performance. The model could be trained with artificial noises such as shadow or blot to increase the robustness. The simulator could also capture data using the "fast" graphics quality setting to investigate imagery which includes shadows, and this is especially important to generalize the model to work in different environment.
 
 The following figure shows the view of 10 frames with noise of random shadowing
 
@@ -278,13 +278,12 @@ The following figure shows the view of 10 frames with noise of random blotting
 3. Although the model doesn't need to predict other measurements (brake, speed and throttle), the speed will influence the response time to steer the car. It is critical to keep the driving speed of traing period and autonomous driving period as close as possible. 
 
 4. Nvidia model used YUV color space, and there are also other color space which could recognize the boudary of road and not-road part listed in the following part. This didn't try to other color spaces, but the model could be improved with different combination of channels from color spaces. For example, the frames from A channel in LAB color space are not recognizable, and those from S channel in HLS color are clear for both track.
-
-	(1) Y in YUV
-	(2) L in LAB
-	(3) LS in HLS
-	(4) L in LUV
-	(5) SV in HSV
-	(6) RGB
+	- Y in YUV
+	- L in LAB
+	- LS in HLS
+	- L in LUV
+	- SV in HSV
+	- RGB
 
 <p align="center"><b>The following figure shows the view of 10 frames of A channel in LAB color space for (1) lakeside track and (2) mountain track.</b></p>
 
@@ -306,6 +305,8 @@ The following figure shows the view of 10 frames with noise of random blotting
 ---
 1. [Nvidia self driving car model](https://devblogs.nvidia.com/deep-learning-self-driving-cars/) 
 2. [Visualizing and Understanding Convolutional Networks](https://arxiv.org/abs/1311.2901)
+3. [Cyclical Learning Rates for Training Neural Networks](https://arxiv.org/pdf/1506.01186.pdf)
+4. [TensorBoard callback for Keras](https://keras.io/callbacks/#tensorboard)
 
 ### Appendix
 #### Useful command
