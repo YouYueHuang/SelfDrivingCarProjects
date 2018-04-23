@@ -91,7 +91,7 @@ The following steps are listed based on the image processing order. The images a
 
 <p align="center">
   <b>Scatter matrix plot of distance, length and slope of Hough lines</b><br>
-  <img src="./img/LineFeatureScattermatrix.png" alt="Overview" width="60%" height="300px">
+  <img src="./img/LineFeatureScattermatrix.png" alt="Overview" width="80%" height="80%">
 </p>
 
 <p align="center">
