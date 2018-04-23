@@ -47,6 +47,23 @@ The following steps are listed based on the image processing order. The images a
   <img src="./img/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+```python
+vertices = np.array([[(0, img_size[0])
+                     ,(img_size[1]//2, img_size[0]//2)
+                     , (img_size[1], img_size[0])]], dtype=np.int32)
+
+mask = np.zeros_like(img)   
+if len(img.shape) > 2:
+    channel_count = img.shape[2] 
+    ignore_mask_color = (255,) * channel_count
+else:
+    ignore_mask_color = 255
+
+cv2.fillPoly(mask, vertices, ignore_mask_color)
+
+masked_image = cv2.bitwise_and(img, mask)
+```
+
 <p align="center">
   <b>Scatter plot of pixel distribution in RGB color space</b>
 </p>
@@ -69,6 +86,24 @@ The following steps are listed based on the image processing order. The images a
   <img src="./img/lane_line.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+* The code for selecting yellow and white lane line
+
+```python
+yellowLine_color_boundary = ([200,170,0], [255, 225, 150])
+WhiteLine_color_boundary = ([210,210,210], [255, 255, 255])
+
+# it can be replaced with WhiteLine_color_boundary
+lower, upper = yellowLine_color_boundary 
+
+# create NumPy arrays from the boundaries
+lower = np.array(lower, dtype = "uint8")
+upper = np.array(upper, dtype = "uint8")
+
+# find the colors within the specified boundaries and apply the mask
+mask = cv2.inRange(img, lower, upper)
+filtered_img = cv2.bitwise_and(img, img,  mask= mask)
+```
+
 <p align="center">
   <b>Gray scale transformation</b><br>
   <img src="./img/contrast_enhanced_line.jpg" alt="Overview" width="60%" height="300px">
@@ -79,15 +114,45 @@ The following steps are listed based on the image processing order. The images a
   <img src="./img/canny_img.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+* The code for Canny edge detection
+
+```python
+low_threshold = 50
+high_threshold = 200
+cv2.Canny(img, low_threshold, high_threshold)
+```
+
 <p align="center">
   <b>Gaussian blurred processing</b><br>
   <img src="./img/gussian_blurred_img.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+* The code for Gaussian blurring
+
+```python
+kernel_size = 7
+cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
+```
+
 <p align="center">
   <b>Hough line transformation</b><br>
   <img src="./img/houghLines_img.jpg" alt="Overview" width="60%" height="300px">
 </p>
+
+* The code for Hough line transformation
+
+```python
+rho = 1
+theta = np.pi/180
+threshold = 50
+min_line_len = 100
+max_line_gap = 160
+
+cv2.HoughLinesP(img, rho, theta
+				, threshold, np.array([])
+    			, minLineLength=min_line_len
+                , maxLineGap=max_line_gap), axis=1)
+```
 
 <p align="center">
   <b>Scatter matrix plot of intercept, length and slope of Hough lines in a video frame</b><br>
