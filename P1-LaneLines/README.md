@@ -47,6 +47,8 @@ The following steps are listed based on the image processing order. The images a
   <img src="./img/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+* The code for selecting region of interest
+
 ```python
 vertices = np.array([[(0, img_size[0])
                      ,(img_size[1]//2, img_size[0]//2)
@@ -164,19 +166,19 @@ cv2.HoughLinesP(img, rho, theta
   <img src="./img/out_image.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
-Differences from the baselines
+### Differences from the baselines
 ---
 * Add slope and distance feature for removing noise. The distance is defined as the average distance of end points of a Hough line. The slope feature is the slope of a Hough line. Intercept was also considers as a filter feature, but it turn out to be potential problem. Some correct lines might be removed if the threshold is not well set. Also, the threshold is hard to be generalized. The shift of the car position on the road might lead to bad filtering resulet. For instance, Sometimes no lane line is detected.
 
 * The algorithm assumes that longer Hough lines are more likely to be lane line segments. Based on the assumption, squared Hough line length is applied as weight to calculate the mass center of the Hough lines. The slope is the average slope of the Hough lines. The mass center and the average slope are used for lane line extrapolation.
 
-Limitations
+### Limitations
 ---
 * All parameters of the computer vision algorithms are chosen manually, so it is hard to generalize them. In the video of challenge, the lane line detection algorithm was seriously influenced by the enviornments such as the shadow of the trees, the the sun light, the stain on the road, etc. The results might be wrong if the images are from in other unknown environment such as rainy day.
 
 * The region of interest is triangular, and most of the noise are from the top of the triangle (Not far from the road ahead.) These noise are caused by other cars or cluttered view. Hough line transformation wrongly detected these noise as possible lane line.   
 
-Possible improvements
+### Possible improvements
 ---
 * Sometimes Hough line transformation wrongly detected these noise as possible lane line. One improvement could be the application of linear regression. 
 In this algorithm, Canny edge detection and Guassian blurring are the preparation before Hough line transformation. After series of filtering, local contrast enhancement and sharpening could be applied to replace these processings. Next, The points can be fitted into a line with linear regression to get the lane lines.
