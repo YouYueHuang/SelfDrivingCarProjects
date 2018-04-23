@@ -182,7 +182,7 @@ The following figure is the time series plot of steering angle  of (from left to
   3. batch size : 64
   4. learning_rate : 1.0e-4 
 
-* Batch size determines how many examples the model look at before making a weight update. The lower it is, the noisier the training signal is going to be, the higher it is, the longer it will take to compute the gradient for each step.
+* Batch size determines how many examples the model look at before making a weight update. The lower it is, the noisier the training signal is going to be, the higher it is, the longer it will take to compute the gradient for each step. On local machine, my batch size is 64 on local machine and 256 on EC2 instance with g2.2xlarge GPU.
 
 * The batch of training set was generated with randomly horizontal flipping
 
