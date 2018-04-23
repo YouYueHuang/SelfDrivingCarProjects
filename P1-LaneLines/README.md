@@ -1,5 +1,20 @@
 ## Finding Lane Lines on the Road
 
+<p align="center">
+  <b>Lane with solid left yellow line</b><br>
+	<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidYellowLeft.gif" alt="Overview" width="48%" height="275px"></a>
+	<a href="https://www.youtube.com/watch?v=1rsAzuuPxj0"><img src="./img/colorFilter_solidYellowLeft.gif" alt="Overview" width="48%" height="275px"></a>
+  <br>
+  <b>Lane with right solid white line</b><br>
+	<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidWhiteRight.gif" alt="Overview" width="48%" height="275px"></a>
+	<a href="https://www.youtube.com/watch?v=A6O8dB1wdZ4"><img src="./img/colorFilter_solidWhiteRight.gif" alt="Overview" width="48%" height="275px"></a>
+  <br>
+  <b>Lane with shadow</b><br>
+	<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/lane_line_logo.gif" alt="Overview" width="48%" height="275px"></a>
+	<a href="https://www.youtube.com/watch?v=BYAPi9Xv6cs"><img src="./img/colorFilter_challenge.gif" alt="Overview" width="48%" height="275px"></a>
+  <br>
+</p>
+
 ### Overview
 ---
 To develop a self-driving car, one of the critical issues is to tell the car where to go. The lines on the road that show drivers where the lanes act as a constant reference for where to steer the vehicle. This project builds an algorithm and applies Python packages to automatically detect lane lines in images.
@@ -23,76 +38,66 @@ This directory contains the test videos and the detected lane lines.
 The following steps are listed based on the image processing order. The images are the results of that step. 
 
 <p align="center">
-  <b>Original image</b>
+  <b>Original image</b><br>
   <img src="./img/input.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
-* Select region of interest
+<p align="center">
+  <b>Select region of interest</b><br>
+  <img src="./img/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-<img src="./examples/region_of_interest.jpg" alt="Overview" width="60%" height="300px">
+<p align="center">
+  <b>Scatter plot of pixel distribution in RGB color space</b>
+</p>
+<table>
+  <tr>
+    <td align="center"><b>GB distribution</b></td>
+    <td align="center"><b>RB distribution</b></td>
+    <td align="center"><b>RG distribution</b></td>
+  </tr> 
+  <tr>
+    <td><img src="./img/GB_distribution.png" alt="Overview" width="30%"></td>
+    <td><img src="./img/RB_distribution.png" alt="Overview" width="30%"></td>
+    <td><img src="./img/RG_distribution.png" alt="Overview" width="30%"></td>
+  </tr>
+</table>
 
+<p align="center">
+  <b>Color Filtering</b><br>
+  <a href="https://youtu.be/8WpxG8XdfZY">video</a><br>
+  <img src="./img/lane_line.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-<center><font size="6">Scatter plot of pixel distribution in RGB color space</font></center>
+<p align="center">
+  <b>Gray scale transformation</b><br>
+  <img src="./img/contrast_enhanced_line.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-<div>
-	<p>GB distribution</p>
-	<img src="./examples/GB_distribution.png" alt="Overview" width="30%">
-	<p>RB distribution</p>
-	<img src="./examples/RB_distribution.png" alt="Overview" width="30%">
-	<p>RG distribution</p>
-	<img src="./examples/RG_distribution.png" alt="Overview" width="30%">
-</div>
+<p align="center">
+  <b>Canny edge detection</b><br>
+  <img src="./img/canny_img.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-* Color detection
+<p align="center">
+  <b>Gaussian blurred processing</b><br>
+  <img src="./img/gussian_blurred_img.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-<img src="./examples/lane_line.jpg" alt="Overview" width="60%" height="300px">
+<p align="center">
+  <b>Hough line transformation</b><br>
+  <img src="./img/houghLines_img.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-  - [video](https://youtu.be/8WpxG8XdfZY)
+<p align="center">
+  <b>Distance and slope feature of Hough lines in Scatter matrix plot</b><br>
+  <img src="./img/Feature_of_interest.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
-* Gray scale transformation
-
-<img src="./examples/contrast_enhanced_line.jpg" alt="Overview" width="60%" height="300px">
-
-* Canny edge detection
-
-<img src="./examples/canny_img.jpg" alt="Overview" width="60%" height="300px">
-
-* Gaussian blurred processing
-
-<img src="./examples/gussian_blurred_img.jpg" alt="Overview" width="60%" height="300px">
-
-*　Hough line transformation
-
-<p>Hough lines</p>
-<img src="./examples/houghLines_img.jpg" alt="Overview" width="60%" height="300px">
-
-<p>Distance and slope feature of Hough lines in Scatter matrix plot</p>
-<img src="./examples/Feature_of_interest.png" alt="Overview" width="60%" height="300px">
-
-* Detected lane line after extrapolation
-
-<img src="./examples/out_image.jpg" alt="Overview" width="60%" height="300px">
-
-
-* Video with detected lane line
-
-```shell
-solidYellowLeft.mp4
-```
-<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidYellowLeft.gif" alt="Overview" width="45%" height="275px"></a>
-<a href="https://www.youtube.com/watch?v=1rsAzuuPxj0"><img src="./img/colorFilter_solidYellowLeft.gif" alt="Overview" width="50%" height="275px"></a>
-
-```shell
-solidWhiteRight.mp4
-```
-<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/solidWhiteRight.gif" alt="Overview" width="45%" height="275px"></a>
-<a href="https://www.youtube.com/watch?v=A6O8dB1wdZ4"><img src="./img/colorFilter_solidWhiteRight.gif" alt="Overview" width="50%" height="275px"></a>
-
-```shell
-challenge.mp4
-```
-<a href="https://www.youtube.com/watch?v=8WpxG8XdfZY"><img src="./img/lane_line_logo.gif" alt="Overview" width="45%" height="275px"></a>
-<a href="https://www.youtube.com/watch?v=BYAPi9Xv6cs"><img src="./img/colorFilter_challenge.gif" alt="Overview" width="45%" height="275px"></a>
+<p align="center">
+  <b>Detected lane line after extrapolation</b><br>
+  <img src="./img/out_image.jpg" alt="Overview" width="60%" height="300px">
+</p>
 
 Differences from the baselines
 ---
