@@ -110,6 +110,7 @@ filtered_img = cv2.bitwise_and(img, img,  mask= mask)
   <img src="./img/contrast_enhanced_line.jpg" alt="Overview" width="60%" height="300px">
 </p>
 
+
 <p align="center">
   <b>Canny edge detection</b><br>
   <img src="./img/canny_img.jpg" alt="Overview" width="60%" height="300px">
@@ -134,6 +135,17 @@ cv2.Canny(img, low_threshold, high_threshold)
 kernel_size = 7
 cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
 ```
+
+#### Hough Line Transformation
+---
+
+Increasing the threshold value will increase the minimum number of intersection required to detect a line and thus is able to differentiate between the left and right lanes better
+
+`min_line_len` as the name suggests will help make sure that the line segments are drawn on the actual lines and thus help eliminate some of the lines from background noise.
+
+Increasing the value of `max_line_gap` will help get more connected annotated lines when there are broken lanes as it allows points that are farther away from each other to be connected with a single line.
+
+To detect curves and faded lanes, Hough lines algorithm could be extended to detect tangents of the curve which helps separate the left and right lines.
 
 <p align="center">
   <b>Hough line transformation</b><br>
