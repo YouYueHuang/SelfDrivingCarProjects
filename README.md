@@ -6,27 +6,27 @@
   <tr>
     <th>
       <p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P1-LaneLines"><img src=".//P1-LaneLines//img//P1_example.gif" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P1-LaneLines"><img src=".//P1-LaneLines//img//P1_example.gif" alt="Overview" width="20%"></a>
            <br>P1: Basic Lane Finding
       </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_2.png" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_2.png" alt="Overview" width="20%"></a>
            <br>P2: Traffic Signs Classification
         </p>
     </th>
        <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P3-Behavioral-Cloning"><img src=".//P3-Behavioral-Cloning//imgs//video_part1.gif" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P3-Behavioral-Cloning"><img src=".//P3-Behavioral-Cloning//imgs//video_part1.gif" alt="Overview" width="20%"></a>
            <br>P3: Behavioral Cloning
         </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P4-advance-lane-finding"><img src=".//P4-advance-lane-finding//imgs//perspective_view_project_video.gif" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P4-advance-lane-finding"><img src=".//P4-advance-lane-finding//imgs//perspective_view_project_video.gif" alt="Overview" width="20%"></a>
            <br>P4: Advanced Lane Finding
         </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P5-Vehicle-Detection"><img src=".//P5-Vehicle-Detection//img//02.gif" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P5-Vehicle-Detection"><img src=".//P5-Vehicle-Detection//img//02.gif" alt="Overview" width="20%"></a>
            <br>P5: Vehicle Detectioin
         </p>
     </th>
