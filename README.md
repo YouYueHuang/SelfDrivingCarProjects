@@ -1,6 +1,7 @@
 # SelfDrivingCarProjects
 
 <!-- <img src="./img/cover.jpeg" alt="Overview" width="400px" height="267px"> -->
+
 <table style="width:100%">
   <tr>
     <th>
@@ -10,7 +11,7 @@
       </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_1_cover.png" alt="Overview" width="60%" height="60%"></a>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_2.png" alt="Overview" width="60%" height="60%"></a>
            <br>P2: Traffic Signs Classification
         </p>
     </th>
@@ -76,4 +77,4 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 * export packages `conda list -e > requirement.txt`
 * install all packages `conda create --name <env> --requirement.txt`
 
-if you would like to install packages separately, this [link](Package_description.md) would help you. 
+If you would like to install packages separately, this [link](Package_description.md) would help you. 
