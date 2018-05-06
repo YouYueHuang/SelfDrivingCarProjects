@@ -67,7 +67,7 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
 
 ### P5 - Vehicle Detection
 ---
-* This project is to create a vehicle detection and tracking pipeline with different features including histogram of oriented gradients (HOG), color histogram, and color binning. To detect if there is any vehicle in a frame, car and non-car images were used to train a support vector machines (SVM) classifier. 
+* This project is to create a vehicle detection and tracking pipeline with different features including histogram of oriented gradients (HOG), color histogram, and color binning. To detect if there is any vehicle in a frame, a standard benchmark car and non-car images were used to train a support vector machines (SVM) classifier. 
 
 ##  Get started
 ------
