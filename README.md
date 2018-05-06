@@ -23,28 +23,23 @@
   <tr>
     <th>
       <p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P1-LaneLines"><img src=".//P1-LaneLines//img//P1_example.gif" alt="Overview" width="90%"></a>
-           <br>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P1-LaneLines"><img src=".//P1-LaneLines//img//P1_example.gif" alt="Overview" width="95%"></a>
       </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_2.png" alt="Overview" width="90%"></a>
-           <br>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P2-Traffic-Sign-Classifier"><img src=".//P2-Traffic-Sign-Classifier//img//top5_prediction_2.png" alt="Overview" width="95%"></a>
         </p>
     </th>
        <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P3-Behavioral-Cloning"><img src=".//P3-Behavioral-Cloning//imgs//video_part1.gif" alt="Overview" width="90%"></a>
-           <br>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P3-Behavioral-Cloning"><img src=".//P3-Behavioral-Cloning//imgs//record_03.gif" alt="Overview" width="95%"></a>
         </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P4-advance-lane-finding"><img src=".//P4-advance-lane-finding//imgs//perspective_view_project_video.gif" alt="Overview" width="90%"></a>
-           <br>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P4-advance-lane-finding"><img src=".//P4-advance-lane-finding//imgs//perspective_view_project_video.gif" alt="Overview" width="95%"></a>
         </p>
     </th>
         <th><p align="center">
-           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P5-Vehicle-Detection"><img src=".//P5-Vehicle-Detection//img//02.gif" alt="Overview" width="90%"></a>
-           <br>
+           <a href="https://github.com/YouYueHuang/SelfDrivingCarProjects/tree/master/P5-Vehicle-Detection"><img src=".//P5-Vehicle-Detection//img//02.gif" alt="Overview" width="95%"></a>
         </p>
     </th>
   </tr>
