@@ -8,7 +8,7 @@
       <p align="center">P1: Basic Lane Finding</p>
     </th>
     <th>
-      <p align="center">P2: Traffic Signs Classification</p>
+      <p align="center">P2: Traffic Sign Classification</p>
     </th>
     <th>
       <p align="center">P3: Behavioral Cloning</p>
@@ -47,7 +47,27 @@
 
 ## Overview
 
-This repository is for Udacity self driving Nanodegree. The projects in this course uses the matplotlib, opencv, google tensorflow library. The working environment is based on python 3.6.1 virtualenv and jupyter notebook. 
+This repository is for Udacity self driving Nanodegree. The projects in this course uses the matplotlib, opencv, tensorflow library. The working environment is based on python 3.6.1 virtualenv and jupyter notebook. 
+
+### P1 - Basic Advanced Lane Finding
+---
+* This project is to detect the lane lines of a video stream. It used computer vision techniques to identify lines, including Hough line transforms and Canny edge detection.
+
+### P2 - Traffic Sign Classification
+---
+* This project is to build a deep neural network to classify traffic signs with TensorFlow. It experimented different network architecture, image pre-processing techniques and data augmentation to reduce overfitting.
+
+### P3 - Behavioral Cloning
+---
+* This project is to train a convolutional neural network for end-to-end learning to drive a vehicle in a simulator with TensorFlow and Keras. In addition, interpolation and moving average were applied to smoothe the steering angle distribuition.
+
+### P4 - Advanced Lane Finding
+---
+* This project is to built an advanced lane-finding algorithm using distortion correction, perspective transformation, color filtering, and gradient thresholding. In the end, the lane curvature and the deviation from the center of road were caluated to understand the road condition.
+
+### P5 - Vehicle Detection
+---
+* This project is to create a vehicle detection and tracking pipeline with different features including histogram of oriented gradients (HOG), color histogram, and color binning. To detect if there is any vehicle in a frame, car and non-car images were used to train a support vector machines (SVM) classifier. 
 
 ##  Get started
 ------
