@@ -83,7 +83,7 @@ This repository is for Udacity self driving Nanodegree. The projects in this cou
   
   - create a python virtual environment named tensorflow `conda create -n tensorflow python=3.6.3`
 
-  - activate virtual environment `activate tensorflow`
+  - activate virtual environment (windows)`activate tensorflow` or (ubuntu)`source activate yourenvname`
 
   - Deactivate virtual environment `deactivate`
 
